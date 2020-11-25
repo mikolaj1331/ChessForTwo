@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2844023604665695908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2844023604665695909}
+  - component: {fileID: 2844023604665695906}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2844023604665695909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844023604665695908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2844023604665695906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844023604665695908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411c78edb27aa4d4f9963bd18b32a076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KingW_Prefab: {fileID: 919132149155446097, guid: 060715a2ac61c6e43944102f7bd22062, type: 3}
+  QueenW_Prefab: {fileID: 919132149155446097, guid: a7060a080b311394da06f6bb6f4b4994, type: 3}
+  RookW_Prefab: {fileID: 919132149155446097, guid: a46acb589ab1a13489b9e324c0fcdd00, type: 3}
+  KnightW_Prefab: {fileID: 919132149155446097, guid: bce4d97f9ef75694fae592699c63ff08, type: 3}
+  BishopW_Prefab: {fileID: 919132149155446097, guid: 8c6441e6b24c48543b39317c6181ed38, type: 3}
+  PawnW_Prefab: {fileID: 919132149155446097, guid: 2ed91cd4ad2f2554ea18a82be6511a23, type: 3}
+  KingB_Prefab: {fileID: 919132149155446097, guid: d32ba744982598942ae91e34ff59bff8, type: 3}
+  QueenB_Prefab: {fileID: 919132149155446097, guid: c1e3f925fd81b1b4dbd5c802c130e29b, type: 3}
+  RookB_Prefab: {fileID: 919132149155446097, guid: 0157926577421f24e871cd26b1360c89, type: 3}
+  KnightB_Prefab: {fileID: 919132149155446097, guid: 050ce2b1b1fc0e04bb78b4d3883e8f34, type: 3}
+  BishopB_Prefab: {fileID: 919132149155446097, guid: 1fe09671275360c4a83dc8a750fd7481, type: 3}
+  PawnB_Prefab: {fileID: 919132149155446097, guid: bc2864190c364f54c93986478b9d7d39, type: 3}
