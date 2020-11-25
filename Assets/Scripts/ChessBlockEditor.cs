@@ -10,11 +10,13 @@ public class ChessBlockEditor : MonoBehaviour
 {
     [SerializeField] float gridSize = 3f;
     [SerializeField] float scaler = 1f;
-
+    
+    public GameObject occupiedByPiece;
     public bool isPlaceable = true;
 
     public float GridSize { get => gridSize; set => gridSize = value; }
     public float Scaler { get => scaler; set => scaler = value; }
+    public GameObject OccupiedByPiece { get => occupiedByPiece; set => occupiedByPiece = value; }
 
     private void Start()
     {

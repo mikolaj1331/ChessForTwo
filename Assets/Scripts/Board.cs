@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public GameObject[] whitePiecesSpots;
-    public GameObject[] blackPiecesSpots;
+    //public GameObject[] whitePiecesSpots;
+    //public GameObject[] blackPiecesSpots;
 }

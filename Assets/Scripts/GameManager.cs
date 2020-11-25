@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] ChessBlockEditor[] chessBlocks; 
     [SerializeField] public GameObject KingW_Prefab;
     [SerializeField] public GameObject QueenW_Prefab;
     [SerializeField] public GameObject RookW_Prefab;
@@ -20,8 +19,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject BishopB_Prefab;
     [SerializeField] public GameObject PawnB_Prefab;
 
+    [SerializeField] Transform blackPieces;
+    [SerializeField] Transform whitePieces;
+
+    ChessBlockEditor[] blocks;
+
     private void Start()
     {
+        blocks = FindObjectsOfType<ChessBlockEditor>();
         InstantiatePieces();
     }
 
@@ -34,33 +39,61 @@ public class GameManager : MonoBehaviour
 
     private void InstantiateWhitePieces(Board board)
     {
-        Instantiate(RookW_Prefab, board.whitePiecesSpots[0].transform);
-        Instantiate(KnightW_Prefab, board.whitePiecesSpots[1].transform);
-        Instantiate(BishopW_Prefab, board.whitePiecesSpots[2].transform);
-        Instantiate(KingW_Prefab, board.whitePiecesSpots[3].transform);
-        Instantiate(QueenW_Prefab, board.whitePiecesSpots[4].transform);
-        Instantiate(BishopW_Prefab, board.whitePiecesSpots[5].transform);
-        Instantiate(KnightW_Prefab, board.whitePiecesSpots[6].transform);
-        Instantiate(RookW_Prefab, board.whitePiecesSpots[7].transform);
-        for (int i = 8; i < 16; i++)
+        AddPiece(RookW_Prefab, new Vector2(0, 0), true, PieceType.Rook);
+        AddPiece(KnightW_Prefab, new Vector2(1, 0), true, PieceType.Knight);
+        AddPiece(BishopW_Prefab, new Vector2(2, 0), true, PieceType.Bishop);
+        AddPiece(KingW_Prefab, new Vector2(3, 0), true, PieceType.King);
+        AddPiece(QueenW_Prefab, new Vector2(4, 0), true, PieceType.Queen);
+        AddPiece(BishopW_Prefab, new Vector2(5, 0), true, PieceType.Bishop);
+        AddPiece(KnightW_Prefab, new Vector2(6, 0), true, PieceType.Knight);
+        AddPiece(RookW_Prefab, new Vector2(7, 0), true, PieceType.Rook);
+
+        for (int i = 0; i < 8; i++)
         {
-            Instantiate(PawnW_Prefab, board.whitePiecesSpots[i].transform);
+            AddPiece(PawnW_Prefab, new Vector2(i, 1), true, PieceType.Pawn);
         }
     }
 
     private void InstantiateBlackPieces(Board board)
     {
-        Instantiate(RookB_Prefab, board.blackPiecesSpots[15].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(KnightB_Prefab, board.blackPiecesSpots[14].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(BishopB_Prefab, board.blackPiecesSpots[13].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(QueenB_Prefab, board.blackPiecesSpots[12].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(KingB_Prefab, board.blackPiecesSpots[11].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(BishopB_Prefab, board.blackPiecesSpots[10].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(KnightB_Prefab, board.blackPiecesSpots[9].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        Instantiate(RookB_Prefab, board.blackPiecesSpots[8].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
-        for (int i = 7; i >= 0; i--)
+        AddPiece(RookB_Prefab, new Vector2(0, 7), false, PieceType.Rook);
+        AddPiece(KnightB_Prefab, new Vector2(1, 7), false, PieceType.Knight);
+        AddPiece(BishopB_Prefab, new Vector2(2, 7), false, PieceType.Bishop);
+        AddPiece(KingB_Prefab, new Vector2(3, 7), false, PieceType.King);
+        AddPiece(QueenB_Prefab, new Vector2(4, 7), false, PieceType.Queen);
+        AddPiece(BishopB_Prefab, new Vector2(5, 7), false, PieceType.Bishop);
+        AddPiece(KnightB_Prefab, new Vector2(6, 7), false, PieceType.Knight);
+        AddPiece(RookB_Prefab, new Vector2(7, 7), false, PieceType.Rook);
+
+        for (int i = 0; i < 8; i++)
         {
-            Instantiate(PawnB_Prefab, board.blackPiecesSpots[i].transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f));
+            AddPiece(PawnB_Prefab, new Vector2(i, 6), false, PieceType.Pawn);
+        }
+    }
+
+    void AddPiece(GameObject prefab, Vector2 position, bool isWhite, PieceType type)
+    {
+        foreach(var block in blocks)
+        {
+            if(block.name == position.x + " , " + position.y)
+            {
+                if(isWhite)
+                {
+                    var tmp = Instantiate(prefab, block.transform.position, Quaternion.identity, whitePieces);
+                    block.occupiedByPiece = tmp;
+                    tmp.AddComponent<Piece>();
+                    tmp.GetComponent<Piece>().IsWhite = true;
+                    tmp.GetComponent<Piece>().Type = type;
+                }
+                else
+                {
+                    var tmp = Instantiate(prefab, block.transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f), blackPieces);
+                    block.occupiedByPiece = tmp;
+                    tmp.AddComponent<Piece>();
+                    tmp.GetComponent<Piece>().IsWhite = false;
+                    tmp.GetComponent<Piece>().Type = type;
+                }
+            }
         }
     }
 }

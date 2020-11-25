@@ -9,6 +9,5 @@ public class Piece : MonoBehaviour
 
     bool isWhite;
     public bool IsWhite { get => isWhite; set => isWhite = value; }
-
-
+    public PieceType Type { get => type; set => type = value; }
 }
