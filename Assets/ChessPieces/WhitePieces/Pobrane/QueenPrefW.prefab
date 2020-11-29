@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8779090752053250935}
   - component: {fileID: 8680576287047332012}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: QueenPrefW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +99,10 @@ PrefabInstance:
     - target: {fileID: 9067965592109028001, guid: 6511f9dcabd15c04b891f44f60382984, type: 3}
       propertyPath: m_Name
       value: White_Queen
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067965592109028001, guid: 6511f9dcabd15c04b891f44f60382984, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6511f9dcabd15c04b891f44f60382984, type: 3}

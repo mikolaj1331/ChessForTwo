@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3805091661134547784}
   - component: {fileID: -1171461832578455437}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: QueenPrefB
   m_TagString: Untagged
   m_Icon: {fileID: 0}

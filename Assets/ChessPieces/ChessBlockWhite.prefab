@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8536162690266108735}
   - component: {fileID: 8536162690266108736}
   - component: {fileID: 8536162690266108737}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8536162690599458888}
   - component: {fileID: 6495807569347098853}
-  m_Layer: 0
+  - component: {fileID: 3431016082310064058}
+  m_Layer: 9
   m_Name: ChessBlockWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,8 +148,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 1
   scaler: 1
-  occupiedByPiece: {fileID: 0}
-  isPlaceable: 1
+--- !u!65 &3431016082310064058
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8536162690599458889}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &8536162691075174762
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +173,7 @@ GameObject:
   - component: {fileID: 8536162691075174758}
   - component: {fileID: 8536162691075174759}
   - component: {fileID: 8536162691075174760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +269,7 @@ GameObject:
   - component: {fileID: 8536162691137889314}
   - component: {fileID: 8536162691137889315}
   - component: {fileID: 8536162691137889316}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +365,7 @@ GameObject:
   - component: {fileID: 8536162691258648409}
   - component: {fileID: 8536162691258648410}
   - component: {fileID: 8536162691258648411}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +461,7 @@ GameObject:
   - component: {fileID: 8536162691516897062}
   - component: {fileID: 8536162691516897063}
   - component: {fileID: 8536162691516897064}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,7 +557,7 @@ GameObject:
   - component: {fileID: 8536162691798625151}
   - component: {fileID: 8536162691798625152}
   - component: {fileID: 8536162691798625153}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

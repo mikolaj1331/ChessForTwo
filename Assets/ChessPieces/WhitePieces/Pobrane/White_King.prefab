@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7989443920130861871}
   - component: {fileID: 2657271239868253896}
   - component: {fileID: 1282807460319005710}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: White_King
   m_TagString: Untagged
   m_Icon: {fileID: 0}

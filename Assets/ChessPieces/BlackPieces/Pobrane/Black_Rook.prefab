@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6473936694421347752}
   - component: {fileID: 7121256648815685729}
   - component: {fileID: 886035647048614495}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Black_Rook
   m_TagString: Untagged
   m_Icon: {fileID: 0}

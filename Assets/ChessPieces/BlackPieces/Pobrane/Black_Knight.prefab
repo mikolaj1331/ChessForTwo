@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4497199076784054719}
   - component: {fileID: 6903893423916906057}
   - component: {fileID: 8642199108386575295}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Black_Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

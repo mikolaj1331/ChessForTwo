@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1889957586811207145}
   - component: {fileID: 6719862088633708344}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BishopPrefW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,6 +55,10 @@ PrefabInstance:
     - target: {fileID: 1580252222532591156, guid: f9ceb86f01e4ad74a9c66be78487cde3, type: 3}
       propertyPath: m_Name
       value: White_Bishop
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580252222532591156, guid: f9ceb86f01e4ad74a9c66be78487cde3, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3648789762296748230, guid: f9ceb86f01e4ad74a9c66be78487cde3, type: 3}
       propertyPath: m_LocalPosition.x

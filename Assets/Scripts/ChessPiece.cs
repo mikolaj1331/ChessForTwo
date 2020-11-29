@@ -8,4 +8,9 @@ public abstract class ChessPiece : MonoBehaviour
     public int PositionY { set; get; }
     public bool IsWhite;
 
+
+    public virtual bool CanMove(int x, int y)
+    {
+        return true;
+    }
 }

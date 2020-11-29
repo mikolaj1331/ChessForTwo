@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3629068642314597028}
   - component: {fileID: 3629068642314597035}
   - component: {fileID: 3516624717113203071}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Black_Bishop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

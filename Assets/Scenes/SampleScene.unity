@@ -255,7 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1540400167}
   - component: {fileID: 1540400166}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,6 +289,7 @@ MonoBehaviour:
   PawnB_Prefab: {fileID: 365028139927893380, guid: 69c62135bd575e549b3ddf5a3aea4c78, type: 3}
   whitePiecesParent: {fileID: 724650642}
   blackPiecesParent: {fileID: 505476697}
+  selectedChessPiece: {fileID: 0}
 --- !u!4 &1540400167
 Transform:
   m_ObjectHideFlags: 0
@@ -320,7 +321,7 @@ PrefabInstance:
       objectReference: {fileID: 724650642}
     - target: {fileID: 2844023604665695906, guid: 244146a50b0d27c459a08c9858ecd8c0, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844023604665695908, guid: 244146a50b0d27c459a08c9858ecd8c0, type: 3}
       propertyPath: m_Name
@@ -328,7 +329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2844023604665695908, guid: 244146a50b0d27c459a08c9858ecd8c0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844023604665695909, guid: 244146a50b0d27c459a08c9858ecd8c0, type: 3}
       propertyPath: m_LocalPosition.x

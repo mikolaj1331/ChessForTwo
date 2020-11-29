@@ -24,6 +24,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Transform whitePiecesParent;
     [SerializeField] Transform blackPiecesParent;
 
+    List<GameObject> activeChessPieces;
+    public ChessPiece[,] Pieces { set; get; }
+    public ChessPiece selectedChessPiece;
     ChessBlockEditor[] blocks;
 
     private void Start()
@@ -35,45 +38,47 @@ public class BoardManager : MonoBehaviour
 
     private void InstantiatePieces()
     {
+        activeChessPieces = new List<GameObject>();
+        Pieces = new ChessPiece[8,8];
         InstantiateWhitePieces();
         InstantiateBlackPieces();
     }
 
     private void InstantiateWhitePieces()
     {
-        AddPiece(RookW_Prefab, new Vector2(0, 0));
-        AddPiece(KnightW_Prefab, new Vector2(1, 0));
-        AddPiece(BishopW_Prefab, new Vector2(2, 0));
-        AddPiece(KingW_Prefab, new Vector2(3, 0));
-        AddPiece(QueenW_Prefab, new Vector2(4, 0));
-        AddPiece(BishopW_Prefab, new Vector2(5, 0));
-        AddPiece(KnightW_Prefab, new Vector2(6, 0));
-        AddPiece(RookW_Prefab, new Vector2(7, 0));
+        AddPiece(RookW_Prefab, new Vector2Int(0, 0));
+        AddPiece(KnightW_Prefab, new Vector2Int(1, 0));
+        AddPiece(BishopW_Prefab, new Vector2Int(2, 0));
+        AddPiece(KingW_Prefab, new Vector2Int(3, 0));
+        AddPiece(QueenW_Prefab, new Vector2Int(4, 0));
+        AddPiece(BishopW_Prefab, new Vector2Int(5, 0));
+        AddPiece(KnightW_Prefab, new Vector2Int(6, 0));
+        AddPiece(RookW_Prefab, new Vector2Int(7, 0));
 
         for (int i = 0; i < 8; i++)
         {
-            AddPiece(PawnW_Prefab, new Vector2(i, 1));
+            AddPiece(PawnW_Prefab, new Vector2Int(i, 1));
         }
     }
 
     private void InstantiateBlackPieces()
     {
-        AddPiece(RookB_Prefab, new Vector2(0, 7));
-        AddPiece(KnightB_Prefab, new Vector2(1, 7));
-        AddPiece(BishopB_Prefab, new Vector2(2, 7));
-        AddPiece(KingB_Prefab, new Vector2(3, 7));
-        AddPiece(QueenB_Prefab, new Vector2(4, 7));
-        AddPiece(BishopB_Prefab, new Vector2(5, 7));
-        AddPiece(KnightB_Prefab, new Vector2(6, 7));
-        AddPiece(RookB_Prefab, new Vector2(7, 7));
+        AddPiece(RookB_Prefab, new Vector2Int(0, 7));
+        AddPiece(KnightB_Prefab, new Vector2Int(1, 7));
+        AddPiece(BishopB_Prefab, new Vector2Int(2, 7));
+        AddPiece(KingB_Prefab, new Vector2Int(3, 7));
+        AddPiece(QueenB_Prefab, new Vector2Int(4, 7));
+        AddPiece(BishopB_Prefab, new Vector2Int(5, 7));
+        AddPiece(KnightB_Prefab, new Vector2Int(6, 7));
+        AddPiece(RookB_Prefab, new Vector2Int(7, 7));
 
         for (int i = 0; i < 8; i++)
         {
-            AddPiece(PawnB_Prefab, new Vector2(i, 6));
+            AddPiece(PawnB_Prefab, new Vector2Int(i, 6));
         }
     }
 
-    void AddPiece(GameObject prefab, Vector2 position)
+    void AddPiece(GameObject prefab, Vector2Int position)
     {
         var pieceComponent = prefab.GetComponent<ChessPiece>();
         foreach (var block in blocks)
@@ -83,14 +88,54 @@ public class BoardManager : MonoBehaviour
                 if (pieceComponent.IsWhite)
                 {
                     var tmp = Instantiate(prefab, block.transform.position, Quaternion.identity, whitePiecesParent);
-                    block.occupiedByPiece = tmp;
+                    Pieces[position.x, position.y] = tmp.GetComponent<ChessPiece>();
+                    Pieces[position.x, position.y].PositionX = position.x;
+                    Pieces[position.x, position.y].PositionY = position.y;
+                    activeChessPieces.Add(tmp);
                 }
                 else
                 {
                     var tmp = Instantiate(prefab, block.transform.position, transform.rotation * Quaternion.Euler(0f, 180f, 0f), blackPiecesParent);
-                    block.occupiedByPiece = tmp;
+                    Pieces[position.x, position.y] = tmp.GetComponent<ChessPiece>();
+                    Pieces[position.x, position.y].PositionX = position.x;
+                    Pieces[position.x, position.y].PositionY = position.y;
+                    activeChessPieces.Add(tmp);
                 }
             }
         }
     }
+
+    public void SelectChessPiece(int x, int y, bool isWhiteTurn)
+    {
+        if (Pieces[x, y] == null) return;
+        if (Pieces[x, y].IsWhite != isWhiteTurn) return;
+
+        selectedChessPiece = Pieces[x, y];
+    }
+
+    public void MoveChessPiece(int x, int y)
+    {
+        if (selectedChessPiece.CanMove(x, y))
+        {
+            if (Pieces[x, y] != null && Pieces[x, y].IsWhite) return;
+            Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
+            selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
+            Pieces[x, y] = selectedChessPiece;
+        }
+        selectedChessPiece = null;
+    }
 }
+
+
+/*
+ * TO CHECK THE ARRAY
+ for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (Pieces[i, j] == null)
+                    continue;
+                Debug.Log(Pieces[i, j].name + "  " + i + " " + j);
+            }
+        }
+ */
