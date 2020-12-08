@@ -34,8 +34,10 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    boardManager.MoveChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z);
-                    isWhiteTurn = !isWhiteTurn;
+                    bool validMove = boardManager.MoveChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z);
+                    
+                    if(validMove)
+                        isWhiteTurn = !isWhiteTurn;
                 }
             }
         }

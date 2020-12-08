@@ -9,8 +9,8 @@ public abstract class ChessPiece : MonoBehaviour
     public bool IsWhite;
 
 
-    public virtual bool CanMove(int x, int y)
+    public virtual bool[,] GetValidMoves()
     {
-        return true;
+        return new bool[8,8];
     }
 }

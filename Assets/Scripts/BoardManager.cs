@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class BoardManager : MonoBehaviour
 {
+    public static BoardManager Instance { set; get; }
+    private bool [,] validMoves { set; get; }
+
     [SerializeField] GameObject boardPrefab;
 
     [SerializeField] public GameObject KingW_Prefab;
@@ -31,6 +34,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
         Instantiate(boardPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameObject.transform);
         blocks = FindObjectsOfType<ChessBlockEditor>();
         InstantiatePieces();
@@ -107,22 +111,46 @@ public class BoardManager : MonoBehaviour
 
     public void SelectChessPiece(int x, int y, bool isWhiteTurn)
     {
-        if (Pieces[x, y] == null) return;
-        if (Pieces[x, y].IsWhite != isWhiteTurn) return;
+        var piece = Pieces[x, y];
+        if (piece == null) return;
+        if (piece.IsWhite != isWhiteTurn) return;
 
-        selectedChessPiece = Pieces[x, y];
+        validMoves = piece.GetValidMoves();
+
+        selectedChessPiece = piece;
     }
 
-    public void MoveChessPiece(int x, int y)
+    public bool MoveChessPiece(int x, int y)
     {
-        if (selectedChessPiece.CanMove(x, y))
+        if (validMoves[x,y])
         {
-            if (Pieces[x, y] != null && Pieces[x, y].IsWhite) return;
-            Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
-            selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
-            Pieces[x, y] = selectedChessPiece;
+           if (Pieces[x, y] != null && Pieces[x, y].IsWhite == selectedChessPiece.IsWhite) return false;
+           else
+            {
+                
+                if(Pieces[x,y] != null)
+                {
+                    ChessPiece target = Pieces[x, y];
+                    if (target.GetType() == typeof(King))
+                    {
+                        // Win the game
+                        
+                    }
+                    Destroy(Pieces[x, y].gameObject);
+                }
+                Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
+                selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
+                selectedChessPiece.PositionX = x;
+                selectedChessPiece.PositionY = y;
+                Pieces[x, y] = selectedChessPiece;
+            }
+        }
+        else
+        {
+            return false;
         }
         selectedChessPiece = null;
+        return true;
     }
 }
 
