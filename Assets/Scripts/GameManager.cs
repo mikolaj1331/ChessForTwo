@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
         RaycastHit[] rayHits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition),50f,LayerMask.GetMask("ChessBoardBlock"));
         foreach (RaycastHit rayHit in rayHits)
         {
-            //Debug.Log("Hit");
             ChessBlockEditor boardBlock = rayHit.transform.GetComponent<ChessBlockEditor>();
             if (boardBlock == null) continue;
             if(Input.GetMouseButtonDown(0))

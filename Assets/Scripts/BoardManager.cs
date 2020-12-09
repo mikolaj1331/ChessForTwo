@@ -122,35 +122,34 @@ public class BoardManager : MonoBehaviour
 
     public bool MoveChessPiece(int x, int y)
     {
-        if (validMoves[x,y])
+        if (validMoves[x, y])
         {
-           if (Pieces[x, y] != null && Pieces[x, y].IsWhite == selectedChessPiece.IsWhite) return false;
-           else
+            if (Pieces[x, y] != null)
             {
-                
-                if(Pieces[x,y] != null)
+                ChessPiece target = Pieces[x, y];
+                if (target.GetType() == typeof(King))
                 {
-                    ChessPiece target = Pieces[x, y];
-                    if (target.GetType() == typeof(King))
-                    {
-                        // Win the game
-                        
-                    }
-                    Destroy(Pieces[x, y].gameObject);
+                    // Win the game
+
                 }
-                Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
-                selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
-                selectedChessPiece.PositionX = x;
-                selectedChessPiece.PositionY = y;
-                Pieces[x, y] = selectedChessPiece;
+                Destroy(Pieces[x, y].gameObject);
             }
+            Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
+            selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
+            selectedChessPiece.PositionX = x;
+            selectedChessPiece.PositionY = y;
+            Pieces[x, y] = selectedChessPiece;
+            selectedChessPiece = null;
+            return true;
         }
-        else
+        else if (Pieces[x, y] != null && Pieces[x, y].IsWhite == selectedChessPiece.IsWhite)
         {
+            selectedChessPiece = Pieces[x, y];
+            validMoves = Pieces[x, y].GetValidMoves();
             return false;
         }
-        selectedChessPiece = null;
-        return true;
+        else
+            return false;
     }
 }
 
