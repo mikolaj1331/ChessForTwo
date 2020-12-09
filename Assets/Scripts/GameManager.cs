@@ -37,8 +37,12 @@ public class GameManager : MonoBehaviour
                     
                     if(validMove)
                         isWhiteTurn = !isWhiteTurn;
+                    else
+                        boardManager.SelectChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z, isWhiteTurn);
                 }
             }
         }
     }
 }
+
+//TODO: Weird behaviour while selecting a chess piece probably cause by raycasting or camera position

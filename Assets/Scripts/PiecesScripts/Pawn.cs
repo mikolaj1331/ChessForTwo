@@ -101,9 +101,12 @@ public class Pawn : ChessPiece
     }
     void HandlePawnAttackMovement(int x, int y, ref bool[,] returnedValue)
     {
-        ChessPiece c1 = BoardManager.Instance.Pieces[PositionX + x, PositionY + y];
-        
-        if (c1 != null && c1.IsWhite != IsWhite)
-            returnedValue[PositionX + x, PositionY + y] = true;
+        if(PositionX + x >= 0 && PositionX + x < 8 && PositionY + y >= 0 && PositionY + y < 8)
+        {
+            ChessPiece c1 = BoardManager.Instance.Pieces[PositionX + x, PositionY + y];
+
+            if (c1 != null && c1.IsWhite != IsWhite)
+                returnedValue[PositionX + x, PositionY + y] = true;
+        }        
     }
 }

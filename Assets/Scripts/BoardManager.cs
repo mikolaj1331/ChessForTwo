@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -111,13 +112,36 @@ public class BoardManager : MonoBehaviour
 
     public void SelectChessPiece(int x, int y, bool isWhiteTurn)
     {
+        UnhighlightValidMoves(blocks);
         var piece = Pieces[x, y];
         if (piece == null) return;
         if (piece.IsWhite != isWhiteTurn) return;
 
         validMoves = piece.GetValidMoves();
+        HighlightValidMoves(validMoves,blocks);
 
         selectedChessPiece = piece;
+    }
+
+    private void HighlightValidMoves(bool[,] validMoves, ChessBlockEditor[] blocks)
+    {
+        foreach(var block in blocks)
+        {
+            if(validMoves[(int)block.transform.position.x, (int)block.transform.position.z])
+            {
+                GameObject highlightObject = block.transform.GetChild(6).gameObject;
+                highlightObject.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    void UnhighlightValidMoves(ChessBlockEditor[] blocks)
+    {
+        foreach(var block in blocks)
+        {
+            GameObject highlightObject = block.transform.GetChild(6).gameObject;
+            highlightObject.gameObject.SetActive(false);
+        }
     }
 
     public bool MoveChessPiece(int x, int y)
@@ -140,13 +164,8 @@ public class BoardManager : MonoBehaviour
             selectedChessPiece.PositionY = y;
             Pieces[x, y] = selectedChessPiece;
             selectedChessPiece = null;
+            UnhighlightValidMoves(blocks);
             return true;
-        }
-        else if (Pieces[x, y] != null && Pieces[x, y].IsWhite == selectedChessPiece.IsWhite)
-        {
-            selectedChessPiece = Pieces[x, y];
-            validMoves = Pieces[x, y].GetValidMoves();
-            return false;
         }
         else
             return false;
