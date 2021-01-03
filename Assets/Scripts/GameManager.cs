@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
             if (boardBlock == null) continue;
             if(Input.GetMouseButtonDown(0))
             {
+                Camera cam = (Camera)FindObjectOfType(typeof(Camera));
+                Debug.DrawLine(cam.transform.position, rayHit.point, Color.red, 2f);
                 Debug.Log("Nacisnales " + boardBlock.name);
                 if(boardManager.selectedChessPiece == null)
                 {
