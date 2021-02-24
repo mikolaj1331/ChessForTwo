@@ -113,12 +113,15 @@ public class BoardManager : MonoBehaviour
     public void SelectChessPiece(int x, int y, bool isWhiteTurn)
     {
         UnhighlightValidMoves(blocks);
+        DeOutlineObject();
+
         var piece = Pieces[x, y];
         if (piece == null) return;
         if (piece.IsWhite != isWhiteTurn) return;
 
         validMoves = piece.GetValidMoves();
         HighlightValidMoves(validMoves,blocks);
+        piece.GetComponent<Outline>().OutlineColor = Color.green;
 
         selectedChessPiece = piece;
     }
@@ -158,17 +161,31 @@ public class BoardManager : MonoBehaviour
                 }
                 Destroy(Pieces[x, y].gameObject);
             }
-            Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
-            selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
-            selectedChessPiece.PositionX = x;
-            selectedChessPiece.PositionY = y;
-            Pieces[x, y] = selectedChessPiece;
-            selectedChessPiece = null;
+            ProcessMovement(x, y);
             UnhighlightValidMoves(blocks);
+            DeOutlineObject();
             return true;
         }
         else
             return false;
+    }
+
+    private void ProcessMovement(int x, int y)
+    {
+        Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
+        selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
+        selectedChessPiece.PositionX = x;
+        selectedChessPiece.PositionY = y;
+        Pieces[x, y] = selectedChessPiece;
+        selectedChessPiece = null;
+    }
+    private void DeOutlineObject()
+    {
+        var chessmans = FindObjectsOfType<ChessPiece>();
+        foreach(var ch in chessmans)
+        {
+            ch.GetComponent<Outline>().OutlineColor = Color.black;
+        }
     }
 }
 

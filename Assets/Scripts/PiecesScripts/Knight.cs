@@ -7,7 +7,6 @@ public class Knight : ChessPiece
     public override bool[,] GetValidMoves()
     {
         bool[,] returnedValue = new bool[8, 8];
-        ChessPiece cp;
 
         // UpLeft
         HandleKnightMovement(PositionX - 1, PositionY + 2, ref returnedValue);
