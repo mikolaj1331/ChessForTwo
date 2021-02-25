@@ -7,17 +7,14 @@ public class King : ChessPiece
     public override bool[,] GetValidMoves()
     {
         bool[,] returnedValue = new bool[8,8];
-        //Front
-        HandleKingMovement(-1, 1, ref returnedValue);
-        HandleKingMovement(0, 1, ref returnedValue);
-        HandleKingMovement(1, 1, ref returnedValue);
-        //Sides
-        HandleKingMovement(-1, 0, ref returnedValue);
-        HandleKingMovement(1, 0, ref returnedValue);
-        //Back
-        HandleKingMovement(-1, -1, ref returnedValue);
-        HandleKingMovement(0, -1, ref returnedValue);
-        HandleKingMovement(1, -1, ref returnedValue);
+
+        for(int i = -1; i < 2; i++)
+        {
+            for(int j = -1; j < 2; j++)
+            {
+                HandleKingMovement(i, j, ref returnedValue);
+            }
+        }
 
         return returnedValue;
     }

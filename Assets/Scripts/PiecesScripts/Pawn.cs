@@ -11,7 +11,7 @@ public class Pawn : ChessPiece
         HandleDiagonalLeftMovement(ref returnedValue);
         HandleDiagonalRightMovement(ref returnedValue);
         HandleForwardMovement(ref returnedValue);
-        HandleSpecialMovement(ref returnedValue);
+        HandleDoubleMovement(ref returnedValue);
 
         return returnedValue;
     }
@@ -26,7 +26,8 @@ public class Pawn : ChessPiece
                 HandlePawnAttackMovement(1, 1, ref returnedValue);
             }
         }
-        else
+        
+        if(!IsWhite)
         {
             if (PositionX != 0 && PositionY != 0)
             {
@@ -43,7 +44,8 @@ public class Pawn : ChessPiece
                 HandlePawnAttackMovement(-1, 1, ref returnedValue);
             }
         }
-        else
+        
+        if(!IsWhite)
         {
             if (PositionX != 7 && PositionY != 0)
             {
@@ -62,7 +64,8 @@ public class Pawn : ChessPiece
                     returnedValue[PositionX, PositionY + 1] = true;
             }
         }
-        else
+
+        if(!IsWhite)
         {
             if (PositionY != 0)
             {
@@ -72,10 +75,9 @@ public class Pawn : ChessPiece
             }
         }
     }
-    void HandleSpecialMovement(ref bool[,] returnedValue)
+    void HandleDoubleMovement(ref bool[,] returnedValue)
     {
-        ChessPiece c1;
-        ChessPiece c2;
+        ChessPiece c1, c2;
         if (IsWhite)
         {
             if (PositionY == 1)
@@ -87,7 +89,8 @@ public class Pawn : ChessPiece
                     returnedValue[PositionX, PositionY + 2] = true;
             }
         }
-        else
+
+        if(!IsWhite)
         {
             if (PositionY == 6)
             {

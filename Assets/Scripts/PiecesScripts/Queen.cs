@@ -8,22 +8,13 @@ public class Queen : ChessPiece
     {
         bool[,] returnedValue = new bool[8, 8];
 
-        //Forward Left Movement
-        HandleOneDirectionLoopMovement(-1, 1, ref returnedValue);
-        //Forward Right Movement
-        HandleOneDirectionLoopMovement(1, 1, ref returnedValue);
-        //Backwards Left Movement
-        HandleOneDirectionLoopMovement(-1, -1, ref returnedValue);
-        //Backwards Right Movement
-        HandleOneDirectionLoopMovement(1, -1, ref returnedValue);
-        //Right Movement
-        HandleOneDirectionLoopMovement(1, 0, ref returnedValue);
-        //Backwards Movement
-        HandleOneDirectionLoopMovement(0, -1, ref returnedValue);
-        //Left Movement
-        HandleOneDirectionLoopMovement(-1, 0, ref returnedValue);
-        //Forward Movement
-        HandleOneDirectionLoopMovement(0, 1, ref returnedValue);
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                HandleOneDirectionLoopMovement(i, j, ref returnedValue);
+            }
+        }
 
         return returnedValue;
     }

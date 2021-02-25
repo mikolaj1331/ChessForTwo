@@ -8,22 +8,22 @@ public class Knight : ChessPiece
     {
         bool[,] returnedValue = new bool[8, 8];
 
-        // UpLeft
-        HandleKnightMovement(PositionX - 1, PositionY + 2, ref returnedValue);
-        // UpRight
-        HandleKnightMovement(PositionX + 1, PositionY + 2, ref returnedValue);
-        // RightUp
-        HandleKnightMovement(PositionX + 2, PositionY + 1, ref returnedValue);
-        // RightDown
-        HandleKnightMovement(PositionX + 2, PositionY - 1, ref returnedValue);
-        // DownLeft
-        HandleKnightMovement(PositionX - 1, PositionY - 2, ref returnedValue);
-        // DownRight
-        HandleKnightMovement(PositionX + 1, PositionY - 2, ref returnedValue);
-        // LeftUp
-        HandleKnightMovement(PositionX - 2, PositionY + 1, ref returnedValue);
         // LeftDown
         HandleKnightMovement(PositionX - 2, PositionY - 1, ref returnedValue);
+        // LeftUp
+        HandleKnightMovement(PositionX - 2, PositionY + 1, ref returnedValue);
+        // DownLeft
+        HandleKnightMovement(PositionX - 1, PositionY - 2, ref returnedValue);
+        // UpLeft
+        HandleKnightMovement(PositionX - 1, PositionY + 2, ref returnedValue);
+        // DownRight
+        HandleKnightMovement(PositionX + 1, PositionY - 2, ref returnedValue);
+        // UpRight
+        HandleKnightMovement(PositionX + 1, PositionY + 2, ref returnedValue);
+        // RightDown
+        HandleKnightMovement(PositionX + 2, PositionY - 1, ref returnedValue);
+        // RightUp
+        HandleKnightMovement(PositionX + 2, PositionY + 1, ref returnedValue);   
 
         return returnedValue;
     }

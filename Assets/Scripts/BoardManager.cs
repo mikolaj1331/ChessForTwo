@@ -5,32 +5,25 @@ using UnityEngine;
 
 [System.Serializable]
 public class BoardManager : MonoBehaviour
-{
-    public static BoardManager Instance { set; get; }
-    private bool [,] validMoves { set; get; }
-
+{   
+    [Header("Models Prefabs")]
     [SerializeField] GameObject boardPrefab;
-
-    [SerializeField] public GameObject KingW_Prefab;
-    [SerializeField] public GameObject QueenW_Prefab;
-    [SerializeField] public GameObject RookW_Prefab;
-    [SerializeField] public GameObject KnightW_Prefab;
-    [SerializeField] public GameObject BishopW_Prefab;
-    [SerializeField] public GameObject PawnW_Prefab;
-
-    [SerializeField] public GameObject KingB_Prefab;
-    [SerializeField] public GameObject QueenB_Prefab;
-    [SerializeField] public GameObject RookB_Prefab;
-    [SerializeField] public GameObject KnightB_Prefab;
-    [SerializeField] public GameObject BishopB_Prefab;
-    [SerializeField] public GameObject PawnB_Prefab;
-
+    [Header("White Chess Pieces Prefabs")]
+    [SerializeField] WhiteChessPiecesPrefabs prefabsW;
+    [Header("Black Chess Pieces Prefabs")]
+    [SerializeField] BlackChessPiecesPrefabs prefabsB;
+    [Header("Parent Transforms")]
     [SerializeField] Transform whitePiecesParent;
     [SerializeField] Transform blackPiecesParent;
 
-    List<GameObject> activeChessPieces;
+    //Public variables needed for game logic
+    public static BoardManager Instance { set; get; }
     public ChessPiece[,] Pieces { set; get; }
     public ChessPiece selectedChessPiece;
+
+    //Private variables needed for BoardManager's logic
+    bool[,] validMoves { set; get; }
+    List<GameObject> activeChessPieces;    
     ChessBlockEditor[] blocks;
 
     private void Start()
@@ -51,35 +44,35 @@ public class BoardManager : MonoBehaviour
 
     private void InstantiateWhitePieces()
     {
-        AddPiece(RookW_Prefab, new Vector2Int(0, 0));
-        AddPiece(KnightW_Prefab, new Vector2Int(1, 0));
-        AddPiece(BishopW_Prefab, new Vector2Int(2, 0));
-        AddPiece(KingW_Prefab, new Vector2Int(3, 0));
-        AddPiece(QueenW_Prefab, new Vector2Int(4, 0));
-        AddPiece(BishopW_Prefab, new Vector2Int(5, 0));
-        AddPiece(KnightW_Prefab, new Vector2Int(6, 0));
-        AddPiece(RookW_Prefab, new Vector2Int(7, 0));
+        AddPiece(prefabsW.RookW_Prefab, new Vector2Int(0, 0));
+        AddPiece(prefabsW.KnightW_Prefab, new Vector2Int(1, 0));
+        AddPiece(prefabsW.BishopW_Prefab, new Vector2Int(2, 0));
+        AddPiece(prefabsW.KingW_Prefab, new Vector2Int(3, 0));
+        AddPiece(prefabsW.QueenW_Prefab, new Vector2Int(4, 0));
+        AddPiece(prefabsW.BishopW_Prefab, new Vector2Int(5, 0));
+        AddPiece(prefabsW.KnightW_Prefab, new Vector2Int(6, 0));
+        AddPiece(prefabsW.RookW_Prefab, new Vector2Int(7, 0));
 
         for (int i = 0; i < 8; i++)
         {
-            AddPiece(PawnW_Prefab, new Vector2Int(i, 1));
+            AddPiece(prefabsW.PawnW_Prefab, new Vector2Int(i, 1));
         }
     }
 
     private void InstantiateBlackPieces()
     {
-        AddPiece(RookB_Prefab, new Vector2Int(0, 7));
-        AddPiece(KnightB_Prefab, new Vector2Int(1, 7));
-        AddPiece(BishopB_Prefab, new Vector2Int(2, 7));
-        AddPiece(KingB_Prefab, new Vector2Int(3, 7));
-        AddPiece(QueenB_Prefab, new Vector2Int(4, 7));
-        AddPiece(BishopB_Prefab, new Vector2Int(5, 7));
-        AddPiece(KnightB_Prefab, new Vector2Int(6, 7));
-        AddPiece(RookB_Prefab, new Vector2Int(7, 7));
+        AddPiece(prefabsB.RookB_Prefab, new Vector2Int(0, 7));
+        AddPiece(prefabsB.KnightB_Prefab, new Vector2Int(1, 7));
+        AddPiece(prefabsB.BishopB_Prefab, new Vector2Int(2, 7));
+        AddPiece(prefabsB.KingB_Prefab, new Vector2Int(3, 7));
+        AddPiece(prefabsB.QueenB_Prefab, new Vector2Int(4, 7));
+        AddPiece(prefabsB.BishopB_Prefab, new Vector2Int(5, 7));
+        AddPiece(prefabsB.KnightB_Prefab, new Vector2Int(6, 7));
+        AddPiece(prefabsB.RookB_Prefab, new Vector2Int(7, 7));
 
         for (int i = 0; i < 8; i++)
         {
-            AddPiece(PawnB_Prefab, new Vector2Int(i, 6));
+            AddPiece(prefabsB.PawnB_Prefab, new Vector2Int(i, 6));
         }
     }
 
@@ -157,8 +150,8 @@ public class BoardManager : MonoBehaviour
                 if (target.GetType() == typeof(King))
                 {
                     // Win the game
-
                 }
+                activeChessPieces.Remove(Pieces[x, y].gameObject);
                 Destroy(Pieces[x, y].gameObject);
             }
             ProcessMovement(x, y);
@@ -181,24 +174,31 @@ public class BoardManager : MonoBehaviour
     }
     private void DeOutlineObject()
     {
-        var chessmans = FindObjectsOfType<ChessPiece>();
-        foreach(var ch in chessmans)
+        foreach(var p in activeChessPieces)
         {
-            ch.GetComponent<Outline>().OutlineColor = Color.black;
+            p.GetComponent<Outline>().OutlineColor = Color.black;
         }
     }
 }
 
+[System.Serializable]
+public class WhiteChessPiecesPrefabs
+{
+    public GameObject KingW_Prefab;
+    public GameObject QueenW_Prefab;
+    public GameObject RookW_Prefab;
+    public GameObject KnightW_Prefab;
+    public GameObject BishopW_Prefab;
+    public GameObject PawnW_Prefab;
+}
 
-/*
- * TO CHECK THE ARRAY
- for(int i = 0; i < 8; i++)
-        {
-            for(int j = 0; j < 8; j++)
-            {
-                if (Pieces[i, j] == null)
-                    continue;
-                Debug.Log(Pieces[i, j].name + "  " + i + " " + j);
-            }
-        }
- */
+[System.Serializable]
+public class BlackChessPiecesPrefabs
+{
+    public GameObject KingB_Prefab;
+    public GameObject QueenB_Prefab;
+    public GameObject RookB_Prefab;
+    public GameObject KnightB_Prefab;
+    public GameObject BishopB_Prefab;
+    public GameObject PawnB_Prefab;
+}
