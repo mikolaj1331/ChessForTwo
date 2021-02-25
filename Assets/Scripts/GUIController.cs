@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject popUpMenu;
+    SceneLoader loader;
+
+    public bool gameIsPaused = false;
+    private void Start()
     {
-        
+        loader = GetComponent<SceneLoader>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PauseGame()
     {
-        
+        Time.timeScale = 0;
+        gameIsPaused = true;
+        popUpMenu.SetActive(true);
     }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        gameIsPaused = false;
+        popUpMenu.SetActive(false);
+    } 
 }

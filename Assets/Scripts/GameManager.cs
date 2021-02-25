@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    GUIController gui;
     BoardManager boardManager;
     public bool isWhiteTurn = true;
 
     private void Start()
     {
+        gui = FindObjectOfType<GUIController>();
         boardManager = FindObjectOfType<BoardManager>();
     }
     private void Update()
     {
+        if (gui.gameIsPaused) return;
         RespondToPlayerInput();
     }
 
