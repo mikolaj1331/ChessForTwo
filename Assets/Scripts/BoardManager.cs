@@ -20,6 +20,7 @@ public class BoardManager : MonoBehaviour
     public static BoardManager Instance { set; get; }
     public ChessPiece[,] Pieces { set; get; }
     public ChessPiece selectedChessPiece;
+    public int turn;
 
     //Private variables needed for BoardManager's logic
     bool[,] validMoves { set; get; }
@@ -29,6 +30,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        turn = 1;
         Instance = this;
         Instantiate(boardPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameObject.transform);
         blocks = FindObjectsOfType<ChessBlockEditor>();
@@ -111,7 +113,11 @@ public class BoardManager : MonoBehaviour
         DeOutlineObject();
 
         var piece = Pieces[x, y];
-        if (piece == null) return;
+        if (piece == null)
+        {
+            selectedChessPiece = null;
+            return;
+        }
         if (piece.IsWhite != isWhiteTurn) return;
 
         validMoves = piece.GetValidMoves();
@@ -157,7 +163,7 @@ public class BoardManager : MonoBehaviour
                 //Destroy(Pieces[x, y].gameObject);
                 Pieces[x, y].gameObject.SetActive(false);
             }
-            logger.LogMovement(selectedChessPiece, x, y);
+            logger.LogMovement(selectedChessPiece, x, y, turn);
             ProcessMovement(x, y);
             UnhighlightValidMoves(blocks);
             DeOutlineObject();

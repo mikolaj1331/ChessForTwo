@@ -52,9 +52,14 @@ public class GameManager : MonoBehaviour
                 bool validMove = boardManager.MoveChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z);
 
                 if (validMove)
+                {
                     isWhiteTurn = !isWhiteTurn;
+                    boardManager.turn++;
+                }
                 else
+                {
                     boardManager.SelectChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z, isWhiteTurn);
+                }
             }
         }
     }

@@ -10,9 +10,9 @@ public class MatchLogger : MonoBehaviour
     {
         matchLog = new List<MoveLogger>();
     }
-    public void LogMovement(ChessPiece cp, float x, float y)
+    public void LogMovement(ChessPiece cp, float x, float y, int turn)
     {
-        matchLog.Add(new MoveLogger(new Vector2(cp.PositionX, cp.PositionY), new Vector2(x, y), cp));
+        matchLog.Add(new MoveLogger(cp, new Vector2(cp.PositionX, cp.PositionY), new Vector2(x, y), turn));
     }
     public void PrintLogger(GameObject go)
     {
@@ -24,7 +24,7 @@ public class MatchLogger : MonoBehaviour
             name = name.Replace("(Clone)", "");
             string xStartValue = SwitchPositionToLetter(log.StartingPos.x);
             string xDestValue = SwitchPositionToLetter(log.DestinationPos.x);
-            result += name + " \t" + xStartValue + log.StartingPos.y + " -> " + xDestValue + log.DestinationPos.y + "\n";
+            result += log.Turn + ". " + name + "    \t" + xStartValue + log.StartingPos.y + " -> " + xDestValue + log.DestinationPos.y + "\n";
         }
         text.text = result;
     }
@@ -59,15 +59,18 @@ public class MoveLogger
     Vector2 startingPos;
     Vector2 destinationPos;
     ChessPiece cp;
+    int turn;
 
     public Vector2 StartingPos { get => startingPos; set => startingPos = value; }
     public Vector2 DestinationPos { get => destinationPos; set => destinationPos = value; }
     public ChessPiece Cp { get => cp; set => cp = value; }
+    public int Turn { get => turn; set => turn = value; }
 
-    public MoveLogger(Vector2 startingPos, Vector2 destinationPos, ChessPiece chessPiece)
+    public MoveLogger(ChessPiece chessPiece,Vector2 startingPos, Vector2 destinationPos, int turn)
     {
         this.StartingPos = startingPos;
         this.DestinationPos = destinationPos;
         this.Cp = chessPiece;
+        this.Turn = turn;
     }
 }
