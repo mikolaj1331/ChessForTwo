@@ -25,6 +25,7 @@ public class BoardManager : MonoBehaviour
     bool[,] validMoves { set; get; }
     List<GameObject> activeChessPieces;    
     ChessBlockEditor[] blocks;
+    MatchLogger logger;
 
     private void Start()
     {
@@ -32,6 +33,7 @@ public class BoardManager : MonoBehaviour
         Instantiate(boardPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameObject.transform);
         blocks = FindObjectsOfType<ChessBlockEditor>();
         InstantiatePieces();
+        logger = GetComponent<MatchLogger>();
     }
 
     private void InstantiatePieces()
@@ -152,8 +154,10 @@ public class BoardManager : MonoBehaviour
                     // Win the game
                 }
                 activeChessPieces.Remove(Pieces[x, y].gameObject);
-                Destroy(Pieces[x, y].gameObject);
+                //Destroy(Pieces[x, y].gameObject);
+                Pieces[x, y].gameObject.SetActive(false);
             }
+            logger.LogMovement(selectedChessPiece, x, y);
             ProcessMovement(x, y);
             UnhighlightValidMoves(blocks);
             DeOutlineObject();
@@ -172,6 +176,7 @@ public class BoardManager : MonoBehaviour
         Pieces[x, y] = selectedChessPiece;
         selectedChessPiece = null;
     }
+
     private void DeOutlineObject()
     {
         foreach(var p in activeChessPieces)

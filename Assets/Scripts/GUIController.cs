@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
-    [SerializeField] GameObject popUpMenu;
+    public bool gameIsPaused = false;
     SceneLoader loader;
 
-    public bool gameIsPaused = false;
     private void Start()
     {
         loader = GetComponent<SceneLoader>();
@@ -17,13 +16,21 @@ public class GUIController : MonoBehaviour
     {
         Time.timeScale = 0;
         gameIsPaused = true;
-        popUpMenu.SetActive(true);
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
         gameIsPaused = false;
-        popUpMenu.SetActive(false);
     } 
+
+    public void OpenWindow(GameObject go)
+    {
+        go.SetActive(true);
+    }
+
+    public void CloseWindow(GameObject go)
+    {
+        go.SetActive(false);
+    }
 }
