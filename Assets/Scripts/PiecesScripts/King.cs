@@ -15,7 +15,6 @@ public class King : ChessPiece
                 HandleKingMovement(i, j, ref returnedValue);
             }
         }
-        returnedValue = FindGeneralInvalidMoves(returnedValue);
         return returnedValue;
     }
 
@@ -38,21 +37,31 @@ public class King : ChessPiece
         }
     }
 
-    bool[,] FindGeneralInvalidMoves(bool[,] returnedValue)
+    public bool[,] FindInvalidMoves(bool[,] returnedValue)
     {
-        var pieces = FindObjectsOfType<ChessPiece>();
-        foreach (var pi in pieces)
+        var chessPieces = FindObjectsOfType<ChessPiece>();
+        foreach (var pi in chessPieces)
         {
-            if (pi.IsWhite == this.IsWhite || pi.CompareTag("King") || pi.CompareTag("Pawn")) continue;
+            if (pi.IsWhite == this.IsWhite) continue;
             var moves = pi.GetValidMoves();
             
             for(int i = 0; i < 8; i++)
             {
                 for(int j = 0; j < 8; j++)
                 {
-                    if(returnedValue[i,j] && moves[i,j])
+                    if(!pi.CompareTag("Pawn"))
                     {
-                        returnedValue[i, j] = false;
+                        if (returnedValue[i, j] && moves[i, j])
+                        {
+                            returnedValue[i, j] = false;
+                        }
+                    }
+                    else
+                    {
+                        if(returnedValue[i,j] && pi.GetComponent<Pawn>().CanAttack(i, j))
+                        {
+                            returnedValue[i, j] = false;
+                        }
                     }
                 }
             }

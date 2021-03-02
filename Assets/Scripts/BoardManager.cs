@@ -37,7 +37,6 @@ public class BoardManager : MonoBehaviour
         InstantiatePieces();
         logger = GetComponent<MatchLogger>();
     }
-
     private void InstantiatePieces()
     {
         activeChessPieces = new List<GameObject>();
@@ -45,7 +44,6 @@ public class BoardManager : MonoBehaviour
         InstantiateWhitePieces();
         InstantiateBlackPieces();
     }
-
     private void InstantiateWhitePieces()
     {
         AddPiece(prefabsW.RookW_Prefab, new Vector2Int(0, 0));
@@ -62,7 +60,6 @@ public class BoardManager : MonoBehaviour
             AddPiece(prefabsW.PawnW_Prefab, new Vector2Int(i, 1));
         }
     }
-
     private void InstantiateBlackPieces()
     {
         AddPiece(prefabsB.RookB_Prefab, new Vector2Int(0, 7));
@@ -79,7 +76,6 @@ public class BoardManager : MonoBehaviour
             AddPiece(prefabsB.PawnB_Prefab, new Vector2Int(i, 6));
         }
     }
-
     void AddPiece(GameObject prefab, Vector2Int position)
     {
         var pieceComponent = prefab.GetComponent<ChessPiece>();
@@ -106,50 +102,30 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-
     public void SelectChessPiece(int x, int y, bool isWhiteTurn)
     {
-        UnhighlightValidMoves(blocks);
-        DeOutlineObject();
+        ResetVisuals();
 
         var piece = Pieces[x, y];
         if (piece == null)
         {
             selectedChessPiece = null;
             return;
-        }
-        if (piece.IsWhite != isWhiteTurn) return;
-
+        }       
         validMoves = piece.GetValidMoves();
-        HighlightValidMoves(validMoves,blocks);
-        piece.GetComponent<Outline>().OutlineColor = Color.green;
+
+        if(piece.CompareTag("King"))
+        {
+            validMoves = piece.GetComponent<King>().FindInvalidMoves(validMoves);
+        }
+
+        ProcessVisuals(isWhiteTurn, piece);
 
         selectedChessPiece = piece;
     }
-
-    private void HighlightValidMoves(bool[,] validMoves, ChessBlockEditor[] blocks)
+    public bool MoveChessPiece(int x, int y, bool isWhiteTurn)
     {
-        foreach(var block in blocks)
-        {
-            if(validMoves[(int)block.transform.position.x, (int)block.transform.position.z])
-            {
-                GameObject highlightObject = block.transform.GetChild(6).gameObject;
-                highlightObject.gameObject.SetActive(true);
-            }
-        }
-    }
-
-    void UnhighlightValidMoves(ChessBlockEditor[] blocks)
-    {
-        foreach(var block in blocks)
-        {
-            GameObject highlightObject = block.transform.GetChild(6).gameObject;
-            highlightObject.gameObject.SetActive(false);
-        }
-    }
-
-    public bool MoveChessPiece(int x, int y)
-    {
+        if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
         if (validMoves[x, y])
         {
             if (Pieces[x, y] != null)
@@ -160,20 +136,17 @@ public class BoardManager : MonoBehaviour
                     // Win the game
                 }
                 activeChessPieces.Remove(Pieces[x, y].gameObject);
-                //Destroy(Pieces[x, y].gameObject);
                 Pieces[x, y].gameObject.SetActive(false);
             }
             logger.LogMovement(selectedChessPiece, x, y, turn);
             ProcessMovement(x, y);
-            UnhighlightValidMoves(blocks);
-            DeOutlineObject();
+            ResetVisuals();
             return true;
         }
         else
             return false;
     }
-
-    private void ProcessMovement(int x, int y)
+    void ProcessMovement(int x, int y)
     {
         Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
         selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
@@ -182,14 +155,55 @@ public class BoardManager : MonoBehaviour
         Pieces[x, y] = selectedChessPiece;
         selectedChessPiece = null;
     }
-
-    private void DeOutlineObject()
+    void ProcessVisuals(bool turn, ChessPiece piece)
+    {
+        if (turn == piece.IsWhite)
+        {
+            HighlightValidMoves(validMoves, blocks, true);
+            piece.GetComponent<Outline>().OutlineColor = Color.green;
+        }
+        else
+        {
+            HighlightValidMoves(validMoves, blocks, false);
+            piece.GetComponent<Outline>().OutlineColor = Color.red;
+        }
+    }
+    void HighlightValidMoves(bool[,] validMoves, ChessBlockEditor[] blocks, bool isYourTurn)
+    {
+        foreach (var block in blocks)
+        {
+            if (validMoves[(int)block.transform.position.x, (int)block.transform.position.z])
+            {
+                GameObject highlightObject = block.transform.GetChild(6).gameObject;
+                highlightObject.gameObject.SetActive(true);
+                if (isYourTurn)
+                    highlightObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                else
+                    highlightObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            }
+        }
+    }
+    void ResetVisuals()
+    {
+        UnhighlightValidMoves(blocks);
+        DeOutlineObject();
+    }    
+    void UnhighlightValidMoves(ChessBlockEditor[] blocks)
+    {
+        foreach(var block in blocks)
+        {
+            GameObject highlightObject = block.transform.GetChild(6).gameObject;
+            highlightObject.gameObject.SetActive(false);
+        }
+    }        
+    void DeOutlineObject()
     {
         foreach(var p in activeChessPieces)
         {
             p.GetComponent<Outline>().OutlineColor = Color.black;
         }
     }
+    
 }
 
 [System.Serializable]

@@ -40,8 +40,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //Camera cam = (Camera)FindObjectOfType(typeof(Camera));
-            //Debug.DrawLine(cam.transform.position, rayHit.point, Color.red, 2f);
             Debug.Log("You clicked " + boardBlock.name);
             if (boardManager.selectedChessPiece == null)
             {
@@ -49,7 +47,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                bool validMove = boardManager.MoveChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z);
+                bool validMove = boardManager.MoveChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z, isWhiteTurn);
 
                 if (validMove)
                 {

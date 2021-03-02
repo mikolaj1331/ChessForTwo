@@ -112,4 +112,19 @@ public class Pawn : ChessPiece
                 returnedValue[PositionX + x, PositionY + y] = true;
         }        
     }
+    public bool CanAttack(int x, int y)
+    {
+        if(IsWhite)
+        {
+            if((x == PositionX - 1 || x == PositionX + 1) && y == PositionY + 1)
+                return true;
+            return false;
+        }
+        else
+        {
+            if ((x == PositionX - 1 || x == PositionX + 1) && y == PositionY - 1)
+                return true;
+            return false;
+        }
+    }
 }
