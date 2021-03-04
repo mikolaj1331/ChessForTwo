@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class King : ChessPiece
 {
-    public override bool[,] GetValidMoves()
+    public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8,8];
 
@@ -12,13 +12,13 @@ public class King : ChessPiece
         {
             for(int j = -1; j < 2; j++)
             {
-                HandleKingMovement(i, j, ref returnedValue);
+                HandleKingMovement(i, j, ref returnedValue, canCaptureAllies);
             }
         }
         return returnedValue;
     }
 
-    void HandleKingMovement(int x, int y, ref bool[,] returnedValue)
+    void HandleKingMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
     {
         if(PositionX + x < 8 && PositionX + x >= 0 && PositionY + y < 8 && PositionY + y >= 0)
         {
@@ -26,9 +26,9 @@ public class King : ChessPiece
             if (cp != null)
             {
                 if (cp.IsWhite != IsWhite)
-                {
                     returnedValue[PositionX + x, PositionY + y] = true;
-                }
+                if (cp.IsWhite == IsWhite && canCaptureAllies)
+                    returnedValue[PositionX + x, PositionY + y] = true;
             }
             else
             {
@@ -43,7 +43,7 @@ public class King : ChessPiece
         foreach (var pi in chessPieces)
         {
             if (pi.IsWhite == this.IsWhite) continue;
-            var moves = pi.GetValidMoves();
+            var moves = pi.GetValidMoves(true);
             
             for(int i = 0; i < 8; i++)
             {

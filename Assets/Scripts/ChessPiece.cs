@@ -7,7 +7,7 @@ public abstract class ChessPiece : MonoBehaviour
     public int PositionX {set; get;}
     public int PositionY { set; get; }
     public bool IsWhite;
-    public virtual bool[,] GetValidMoves()
+    public virtual bool[,] GetValidMoves(bool canCaptureAllies)
     {
         return new bool[8,8];
     }

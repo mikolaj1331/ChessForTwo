@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class Pawn : ChessPiece
 {
-   public override bool[,] GetValidMoves()
+   public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8, 8];
 
-        HandleDiagonalLeftMovement(ref returnedValue);
-        HandleDiagonalRightMovement(ref returnedValue);
+        HandleDiagonalLeftMovement(ref returnedValue, canCaptureAllies);
+        HandleDiagonalRightMovement(ref returnedValue, canCaptureAllies);
         HandleForwardMovement(ref returnedValue);
         HandleDoubleMovement(ref returnedValue);
 
         return returnedValue;
     }
 
-    void HandleDiagonalRightMovement(ref bool[,] returnedValue)
+    void HandleDiagonalRightMovement(ref bool[,] returnedValue, bool canCaptureAllies)
     {
         
         if (IsWhite)
         {
             if (PositionX != 7 && PositionY != 7)
             {
-                HandlePawnAttackMovement(1, 1, ref returnedValue);
+                HandlePawnAttackMovement(1, 1, ref returnedValue, canCaptureAllies);
             }
         }
         
@@ -31,17 +31,17 @@ public class Pawn : ChessPiece
         {
             if (PositionX != 0 && PositionY != 0)
             {
-                HandlePawnAttackMovement(-1, -1, ref returnedValue);
+                HandlePawnAttackMovement(-1, -1, ref returnedValue, canCaptureAllies);
             }
         }
     }
-    void HandleDiagonalLeftMovement(ref bool[,] returnedValue)
+    void HandleDiagonalLeftMovement(ref bool[,] returnedValue, bool canCaptureAllies)
     {
         if (IsWhite)
         {
             if (PositionY != 7)
             {
-                HandlePawnAttackMovement(-1, 1, ref returnedValue);
+                HandlePawnAttackMovement(-1, 1, ref returnedValue, canCaptureAllies);
             }
         }
         
@@ -49,7 +49,7 @@ public class Pawn : ChessPiece
         {
             if (PositionX != 7 && PositionY != 0)
             {
-                HandlePawnAttackMovement(1, -1, ref returnedValue);
+                HandlePawnAttackMovement(1, -1, ref returnedValue, canCaptureAllies);
             }
         }
     }
@@ -102,14 +102,20 @@ public class Pawn : ChessPiece
             }
         }
     }
-    void HandlePawnAttackMovement(int x, int y, ref bool[,] returnedValue)
+    void HandlePawnAttackMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
     {
         if(PositionX + x >= 0 && PositionX + x < 8 && PositionY + y >= 0 && PositionY + y < 8)
         {
             ChessPiece c1 = BoardManager.Instance.Pieces[PositionX + x, PositionY + y];
 
-            if (c1 != null && c1.IsWhite != IsWhite)
-                returnedValue[PositionX + x, PositionY + y] = true;
+            if (c1 != null)
+            {
+                if(c1.IsWhite != IsWhite && !canCaptureAllies)
+                    returnedValue[PositionX + x, PositionY + y] = true;
+                if(c1.IsWhite == IsWhite && canCaptureAllies)
+                    returnedValue[PositionX + x, PositionY + y] = true;
+            }
+                
         }        
     }
     public bool CanAttack(int x, int y)

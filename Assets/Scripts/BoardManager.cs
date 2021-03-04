@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour
     public int turn;
 
     //Private variables needed for BoardManager's logic
-    bool[,] validMoves { set; get; }
+    bool[,] ValidMoves { set; get; }
     List<GameObject> activeChessPieces;    
     ChessBlockEditor[] blocks;
     MatchLogger logger;
@@ -112,11 +112,11 @@ public class BoardManager : MonoBehaviour
             selectedChessPiece = null;
             return;
         }       
-        validMoves = piece.GetValidMoves();
+        ValidMoves = piece.GetValidMoves(false);
 
         if(piece.CompareTag("King"))
         {
-            validMoves = piece.GetComponent<King>().FindInvalidMoves(validMoves);
+            ValidMoves = piece.GetComponent<King>().FindInvalidMoves(ValidMoves);
         }
 
         ProcessVisuals(isWhiteTurn, piece);
@@ -126,7 +126,7 @@ public class BoardManager : MonoBehaviour
     public bool MoveChessPiece(int x, int y, bool isWhiteTurn)
     {
         if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
-        if (validMoves[x, y])
+        if (ValidMoves[x, y])
         {
             if (Pieces[x, y] != null)
             {
@@ -159,12 +159,12 @@ public class BoardManager : MonoBehaviour
     {
         if (turn == piece.IsWhite)
         {
-            HighlightValidMoves(validMoves, blocks, true);
+            HighlightValidMoves(ValidMoves, blocks, true);
             piece.GetComponent<Outline>().OutlineColor = Color.green;
         }
         else
         {
-            HighlightValidMoves(validMoves, blocks, false);
+            HighlightValidMoves(ValidMoves, blocks, false);
             piece.GetComponent<Outline>().OutlineColor = Color.red;
         }
     }

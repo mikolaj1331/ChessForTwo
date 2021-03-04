@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Bishop : ChessPiece
 {
-    public override bool[,] GetValidMoves()
+    public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8, 8];
 
         //Top Left Movement
-        HandleBishopMovement(-1, 1, ref returnedValue);
+        HandleBishopMovement(-1, 1, ref returnedValue, canCaptureAllies);
         //Top Right Movement
-        HandleBishopMovement(1, 1, ref returnedValue);
+        HandleBishopMovement(1, 1, ref returnedValue, canCaptureAllies);
         //Bottom Left Movement
-        HandleBishopMovement(-1, -1, ref returnedValue);
+        HandleBishopMovement(-1, -1, ref returnedValue, canCaptureAllies);
         //Bottom Right Movement
-        HandleBishopMovement(1, -1, ref returnedValue);
+        HandleBishopMovement(1, -1, ref returnedValue, canCaptureAllies);
 
         return returnedValue;
     }
 
-    void HandleBishopMovement(int x, int y, ref bool[,] returnedValue)
+    void HandleBishopMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
     {
         int i = PositionX;
         int j = PositionY;
@@ -37,7 +37,9 @@ public class Bishop : ChessPiece
                 returnedValue[i, j] = true;
             else
             {
-                if (cp.IsWhite != IsWhite)
+                if (cp.IsWhite != IsWhite && !canCaptureAllies)
+                    returnedValue[i, j] = true;
+                if (cp.IsWhite == IsWhite && canCaptureAllies)
                     returnedValue[i, j] = true;
                 break;
             }

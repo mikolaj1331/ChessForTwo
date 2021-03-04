@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Rook : ChessPiece
 {
-    public override bool[,] GetValidMoves()
+    public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8, 8];
 
         //Righ movement
-        HandleRookMovement(1, 0, ref returnedValue);
+        HandleRookMovement(1, 0, ref returnedValue, canCaptureAllies);
         //Down movement
-        HandleRookMovement(0, -1, ref returnedValue);
+        HandleRookMovement(0, -1, ref returnedValue, canCaptureAllies);
         //Left movement
-        HandleRookMovement(-1, 0, ref returnedValue);
+        HandleRookMovement(-1, 0, ref returnedValue, canCaptureAllies);
         //Right movement
-        HandleRookMovement(0, 1, ref returnedValue);
+        HandleRookMovement(0, 1, ref returnedValue, canCaptureAllies);
 
         return returnedValue;
     }
 
-    void HandleRookMovement(int x, int y, ref bool[,] returnedValue)
+    void HandleRookMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
     {
         int i = PositionX;
         int j = PositionY;
@@ -37,7 +37,9 @@ public class Rook : ChessPiece
                 returnedValue[i, j] = true;
             else
             {
-                if (cp.IsWhite != IsWhite)
+                if (cp.IsWhite != IsWhite && !canCaptureAllies)
+                    returnedValue[i, j] = true;
+                if(cp.IsWhite == IsWhite && canCaptureAllies)
                     returnedValue[i, j] = true;
                 break;
             }
