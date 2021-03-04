@@ -37,7 +37,7 @@ public class Queen : ChessPiece
             {
                 if (cp.IsWhite != IsWhite && !canCaptureAllies)
                     returnedValue[i, j] = true;
-                if (cp.IsWhite == IsWhite && canCaptureAllies)
+                if (cp.IsWhite == IsWhite && canCaptureAllies && cp != this)
                     returnedValue[i, j] = true;
 
                 break;

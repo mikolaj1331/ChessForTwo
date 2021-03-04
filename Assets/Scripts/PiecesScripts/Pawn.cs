@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Pawn : ChessPiece
 {
+    [SerializeField] Queen queenPrefab;
    public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8, 8];
@@ -132,5 +133,16 @@ public class Pawn : ChessPiece
                 return true;
             return false;
         }
+    }
+    public ChessPiece[,] PromoteToQueen(ChessPiece[,] pieces, List<ChessPiece> lista)
+    {
+        Queen queen = Instantiate<Queen>(queenPrefab, this.transform.position, this.transform.rotation);
+        queen.PositionX = this.PositionX;
+        queen.PositionY = this.PositionY;
+        queen.IsWhite = this.IsWhite;
+        pieces[queen.PositionX, queen.PositionY] = queen;
+        lista.Add(queen);
+        gameObject.SetActive(false);
+        return pieces;
     }
 }

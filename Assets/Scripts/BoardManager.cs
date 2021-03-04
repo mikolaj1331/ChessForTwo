@@ -77,20 +77,35 @@ public class BoardManager : MonoBehaviour
             }
             logger.LogMovement(selectedChessPiece, x, y, turn);
             ProcessMovement(x, y);
+            CheckForPromotion(selectedChessPiece);
             ResetVisuals();
+            selectedChessPiece = null;
             return true;
         }
         else
             return false;
     }
+
+    private void CheckForPromotion(ChessPiece selectedChessPiece)
+    {
+        if(selectedChessPiece.CompareTag("Pawn"))
+        {
+            if ((selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 7) || (!selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 0))
+            {
+                Pieces = selectedChessPiece.GetComponent<Pawn>().PromoteToQueen(Pieces,activeChessPieces);
+                
+            }
+        }
+        return;
+    }
+
     void ProcessMovement(int x, int y)
     {
         Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
         selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
         selectedChessPiece.PositionX = x;
         selectedChessPiece.PositionY = y;
-        Pieces[x, y] = selectedChessPiece;
-        selectedChessPiece = null;
+        Pieces[x, y] = selectedChessPiece;        
     }
     void ProcessVisuals(bool turn, ChessPiece piece)
     {
