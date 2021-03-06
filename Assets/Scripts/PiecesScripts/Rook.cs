@@ -9,18 +9,17 @@ public class Rook : ChessPiece
         bool[,] returnedValue = new bool[8, 8];
 
         //Righ movement
-        HandleRookMovement(1, 0, ref returnedValue, canCaptureAllies);
+        HandleRookMovement(1, 0, ref returnedValue, canCaptureAllies, false) ;
         //Down movement
-        HandleRookMovement(0, -1, ref returnedValue, canCaptureAllies);
+        HandleRookMovement(0, -1, ref returnedValue, canCaptureAllies, false);
         //Left movement
-        HandleRookMovement(-1, 0, ref returnedValue, canCaptureAllies);
+        HandleRookMovement(-1, 0, ref returnedValue, canCaptureAllies, false);
         //Right movement
-        HandleRookMovement(0, 1, ref returnedValue, canCaptureAllies);
+        HandleRookMovement(0, 1, ref returnedValue, canCaptureAllies, false);
 
         return returnedValue;
     }
-
-    void HandleRookMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
+    void HandleRookMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
     {
         int i = PositionX;
         int j = PositionY;
@@ -41,7 +40,10 @@ public class Rook : ChessPiece
                     returnedValue[i, j] = true;
                 if(cp.IsWhite == IsWhite && canCaptureAllies)
                     returnedValue[i, j] = true;
-                break;
+                if(!canPassThroughObjects)
+                {
+                    break;
+                }
             }
         }
     }

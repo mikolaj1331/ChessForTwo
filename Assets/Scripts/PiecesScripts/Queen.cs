@@ -12,13 +12,13 @@ public class Queen : ChessPiece
         {
             for (int j = -1; j < 2; j++)
             {
-                HandleOneDirectionLoopMovement(i, j, ref returnedValue, canCaptureAllies);
+                HandleOneDirectionLoopMovement(i, j, ref returnedValue, canCaptureAllies, false);
             }
         }
 
         return returnedValue;
     }
-    void HandleOneDirectionLoopMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
+    void HandleOneDirectionLoopMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
     {
         int i = PositionX;
         int j = PositionY;
@@ -39,8 +39,11 @@ public class Queen : ChessPiece
                     returnedValue[i, j] = true;
                 if (cp.IsWhite == IsWhite && canCaptureAllies && cp != this)
                     returnedValue[i, j] = true;
-
-                break;
+                if(!canPassThroughObjects)
+                {
+                    break;
+                }
+                
             }
         }
     }

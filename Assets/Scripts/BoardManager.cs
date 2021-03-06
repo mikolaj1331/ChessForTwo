@@ -53,7 +53,7 @@ public class BoardManager : MonoBehaviour
 
         if(piece.CompareTag("King"))
         {
-            ValidMoves = piece.GetComponent<King>().FindInvalidMoves(ValidMoves);
+            ValidMoves = piece.GetComponent<King>().FindInvalidMoves(ValidMoves, activeChessPieces);
         }
 
         ProcessVisuals(isWhiteTurn, piece);

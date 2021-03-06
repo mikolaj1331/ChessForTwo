@@ -37,9 +37,8 @@ public class King : ChessPiece
         }
     }
 
-    public bool[,] FindInvalidMoves(bool[,] returnedValue)
+    public override bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
     {
-        var chessPieces = FindObjectsOfType<ChessPiece>();
         foreach (var pi in chessPieces)
         {
             if (pi.IsWhite == this.IsWhite) continue;
