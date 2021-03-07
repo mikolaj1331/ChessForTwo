@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class ChessPiece : MonoBehaviour
 {
@@ -10,18 +11,71 @@ public abstract class ChessPiece : MonoBehaviour
     public abstract bool[,] GetValidMoves(bool canCaptureAllies);
     public virtual bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
     {
-        //foreach(ChessPiece cp in chessPieces)
-        //{
-        //    if (cp.IsWhite == this.IsWhite || cp.CompareTag("Pawn") || cp.CompareTag("Knight") || cp.CompareTag("Knight")) continue;
-        //    var moves = cp.GetValidMoves(false);
-        //    if(moves[PositionX,PositionY] == true)
-        //    {
+        ChessPiece[,] pieces = MapPiecesPositionsOnBoard(chessPieces);
 
-        //    }
-        //}
-        return new bool[8, 8];
+        King myKing = GetAlliedKing();
+        foreach (ChessPiece cp in chessPieces)
+        {
+            if (cp.IsWhite == this.IsWhite || cp.CompareTag("Pawn") || cp.CompareTag("Knight") || cp.CompareTag("King")) continue;
+            var moves = cp.GetValidMoves(false);
+            var myMoves = this.GetValidMoves(false);
+            if (moves[PositionX, PositionY])
+            {
+                bool[,] shortestPath = GetShortestPath(cp, this);
+
+                if (shortestPath[myKing.PositionX, myKing.PositionY])
+                {
+                    List<ChessPiece> listOfPiecesOnThePath = new List<ChessPiece>();
+                    List<Vector2Int> listOfPositions = new List<Vector2Int>();
+
+                    FindTheChessPiecesOnThePath(pieces, cp, listOfPiecesOnThePath, listOfPositions);
+
+                    if (listOfPiecesOnThePath[0] == this && listOfPiecesOnThePath[1] == myKing)
+                    {
+                        Array.Clear(returnedValue, 0, 64);
+                        if (myMoves[cp.PositionX, cp.PositionY])
+                            returnedValue[cp.PositionX, cp.PositionY] = true;
+                        foreach (var vector in listOfPositions)
+                        {
+                            if (shortestPath[vector.x, vector.y] && myMoves[vector.x, vector.y])
+                                returnedValue[vector.x, vector.y] = true;
+                        }
+                    }
+                }
+            }
+        }
+        return returnedValue;
     }
-    public King GetAlliedKing()
+
+    private static ChessPiece[,] MapPiecesPositionsOnBoard(List<ChessPiece> chessPieces)
+    {
+        ChessPiece[,] pieces = new ChessPiece[8, 8];
+        foreach (ChessPiece ch in chessPieces)
+        {
+            pieces[ch.PositionX, ch.PositionY] = ch;
+        }
+
+        return pieces;
+    }
+
+    private void FindTheChessPiecesOnThePath(ChessPiece[,] pieces, ChessPiece cp, List<ChessPiece> listOfPiecesOnThePath, List<Vector2Int> listOfPositions)
+    {
+        Vector2Int direction = CalcualteDirection(cp, this);
+
+        int k = cp.PositionX + direction.x, l = cp.PositionY + direction.y;
+        do
+        {
+            if (pieces[k, l] != null)
+            {
+                listOfPiecesOnThePath.Add(pieces[k, l]);
+            }
+            listOfPositions.Add(new Vector2Int(k, l));
+            k += direction.x;
+            l += direction.y;
+        } while ((k >= 0 && k < 8) && (l >= 0 && l < 8));
+    }
+
+    protected King GetAlliedKing()
     {
         var kings = FindObjectsOfType<King>();
         foreach (var k in kings)
@@ -30,5 +84,52 @@ public abstract class ChessPiece : MonoBehaviour
                 return k;
         }
         return null;
+    }
+    protected void HandleOneDirectionLoopMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
+    {
+        int i = PositionX;
+        int j = PositionY;
+
+        while (true)
+        {
+            i += x;
+            j += y;
+
+            if (i < 0 || i >= 8 || j < 0 || j >= 8)
+                break;
+            ChessPiece cp = BoardManager.Instance.Pieces[i, j];
+            if (cp == null)
+                returnedValue[i, j] = true;
+            else
+            {
+                if (cp.IsWhite != IsWhite && !canCaptureAllies)
+                    returnedValue[i, j] = true;
+                if (cp.IsWhite == IsWhite && canCaptureAllies && cp != this)
+                    returnedValue[i, j] = true;
+                if (!canPassThroughObjects)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    protected bool[,] GetShortestPath(ChessPiece attacker, ChessPiece defender)
+    {
+        Vector2Int direction = CalcualteDirection(attacker, defender);
+        bool[,] shortestPath = new bool[8, 8];
+        attacker.HandleOneDirectionLoopMovement(direction.x, direction.y, ref shortestPath, false, true);
+        return shortestPath;
+    }
+    Vector2Int CalcualteDirection(ChessPiece attacker, ChessPiece defender)
+    {
+        int directionX = (defender.PositionX - attacker.PositionX);
+        int directionY = (defender.PositionY - attacker.PositionY);
+
+        if (directionX != 0)
+            directionX /= Mathf.Abs((defender.PositionX - attacker.PositionX));
+        if (directionY != 0)
+            directionY /= Mathf.Abs((defender.PositionY - attacker.PositionY));
+
+        return new Vector2Int(directionX, directionY);
     }
 }

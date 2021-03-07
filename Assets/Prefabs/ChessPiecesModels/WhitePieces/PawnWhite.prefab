@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6115226229583807912}
   - component: {fileID: 4243528832646141958}
   - component: {fileID: -1128327263156135915}
+  - component: {fileID: 8070870633132539627}
   m_Layer: 0
   m_Name: PawnWhite
   m_TagString: Pawn
@@ -30,7 +31,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2371866479805774008}
-  - {fileID: 408794846015963262}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1105,84 +1105,19 @@ MonoBehaviour:
     - {x: 0.41602862, y: -0.8770558, z: 0.24019428}
     - {x: -0.12200867, y: -0.8422943, z: 0.5250278}
     - {x: 0.16430233, y: -0.87705594, z: 0.45141733}
---- !u!1001 &408794846016049670
-PrefabInstance:
+--- !u!65 &8070870633132539627
+BoxCollider:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 6115226229583807912}
-    m_Modifications:
-    - target: {fileID: 103078, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_Name
-      value: White Queen
-      objectReference: {fileID: 0}
-    - target: {fileID: 103078, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
---- !u!4 &408794846015963262 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 447096, guid: 6f38c700bedefe64f8364436528e5c3d, type: 3}
-  m_PrefabInstance: {fileID: 408794846016049670}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495572684074931028}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.65, y: 0.8, z: 0.65}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2371866479805956794
 PrefabInstance:
   m_ObjectHideFlags: 0

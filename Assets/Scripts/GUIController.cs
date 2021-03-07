@@ -5,12 +5,6 @@ using UnityEngine;
 public class GUIController : MonoBehaviour
 {
     public bool gameIsPaused = false;
-    SceneLoader loader;
-
-    private void Start()
-    {
-        loader = GetComponent<SceneLoader>();
-    }
 
     public void PauseGame()
     {
