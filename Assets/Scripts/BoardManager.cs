@@ -50,17 +50,22 @@ public class BoardManager : MonoBehaviour
             return;
         }       
         ValidMoves = piece.GetValidMoves(false);
-
-        //if(piece.CompareTag("King"))
-        //{
-        //    ValidMoves = piece.GetComponent<King>().FindInvalidMoves(ValidMoves, activeChessPieces);
-        //}
         ValidMoves = piece.FindInvalidMoves(ValidMoves, activeChessPieces);
+        IsAlliedKingChecked(piece);
 
         ProcessVisuals(isWhiteTurn, piece);
-
         selectedChessPiece = piece;
     }
+
+    private void IsAlliedKingChecked(ChessPiece piece)
+    {
+        King king = piece.GetAlliedKing(piece.IsWhite);
+        List<ChessPiece> list = king.ListOfDanger;
+        if(list.Count > 0)
+            ValidMoves = piece.HandleKingChecked(list.Count, ValidMoves);
+        return;
+    }
+
     public bool MoveChessPiece(int x, int y, bool isWhiteTurn)
     {
         if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
@@ -69,16 +74,15 @@ public class BoardManager : MonoBehaviour
             if (Pieces[x, y] != null)
             {
                 ChessPiece target = Pieces[x, y];
-                if (target.GetType() == typeof(King))
-                {
-                    // Win the game
-                }
-                Pieces[x, y].gameObject.SetActive(false);
-                activeChessPieces.Remove(Pieces[x, y]);
+                King king = target.GetAlliedKing(!target.IsWhite);
+                if (king.ListOfDanger.Contains(target)) king.ListOfDanger.Remove(target);
+                target.gameObject.SetActive(false);
+                activeChessPieces.Remove(target);
             }
             logger.LogMovement(selectedChessPiece, x, y, turn);
             ProcessMovement(x, y);
             CheckForPromotion(selectedChessPiece);
+            CheckIfCanCaptureEnemyKing(activeChessPieces, selectedChessPiece);
             ResetVisuals();
             selectedChessPiece = null;
             return true;
@@ -86,7 +90,28 @@ public class BoardManager : MonoBehaviour
         else
             return false;
     }
+    private void CheckIfCanCaptureEnemyKing(List<ChessPiece> activeChessPieces, ChessPiece selectedChessPiece)
+    {
+        var kings = FindObjectsOfType<King>();
 
+       foreach(var k in kings)
+        {
+            foreach (var ch in activeChessPieces)
+            {
+                if (ch.IsWhite == selectedChessPiece.IsWhite)
+                {
+                    var moves = ch.GetValidMoves(false);
+                    if (moves[k.PositionX, k.PositionY])
+                    {
+                        k.ListOfDanger.Add(ch);
+                        return;
+                    }
+                }
+                if (k.ListOfDanger.Contains(ch))
+                    k.ListOfDanger.Remove(ch);
+            }
+        }
+    }
     private void CheckForPromotion(ChessPiece selectedChessPiece)
     {
         if(selectedChessPiece.CompareTag("Pawn"))
@@ -94,12 +119,10 @@ public class BoardManager : MonoBehaviour
             if ((selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 7) || (!selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 0))
             {
                 Pieces = selectedChessPiece.GetComponent<Pawn>().PromoteToQueen(Pieces,activeChessPieces);
-                
             }
         }
         return;
     }
-
     void ProcessMovement(int x, int y)
     {
         Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;

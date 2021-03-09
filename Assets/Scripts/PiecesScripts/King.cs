@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class King : ChessPiece
 {
+    List<ChessPiece> listOfDanger;
+
+    public List<ChessPiece> ListOfDanger { get => listOfDanger; set => listOfDanger = value; }
+
+    private void Start()
+    {
+        ListOfDanger = new List<ChessPiece>();
+    }
     public override bool[,] GetValidMoves(bool canCaptureAllies)
     {
         bool[,] returnedValue = new bool[8,8];
@@ -62,6 +70,29 @@ public class King : ChessPiece
                             returnedValue[i, j] = false;
                         }
                     }
+                }
+            }
+        }
+        return returnedValue;
+    }
+
+
+    public override bool[,] HandleKingChecked(int count, bool[,] returnedValue)
+    {
+        if (count == 0) return returnedValue;
+
+        var moves = returnedValue;
+        for (int k = 0; k < listOfDanger.Count; k++)
+        {
+            ChessPiece attacker = this.ListOfDanger[k];                
+            var attackerMoves = attacker.GetShortestPath(attacker, this, true);
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (attackerMoves[i, j] && returnedValue[i, j])
+                        moves[i, j] = false;
                 }
             }
         }

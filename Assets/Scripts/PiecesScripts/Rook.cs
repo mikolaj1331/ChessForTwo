@@ -18,12 +18,5 @@ public class Rook : ChessPiece
         HandleOneDirectionLoopMovement(0, 1, ref returnedValue, canCaptureAllies, false);
 
         return returnedValue;
-    }
-   
-    
-
-    public override bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
-    {
-        return new bool[8, 8];
-    }
+    } 
 }

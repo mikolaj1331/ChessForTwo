@@ -13,7 +13,7 @@ public abstract class ChessPiece : MonoBehaviour
     {
         ChessPiece[,] pieces = MapPiecesPositionsOnBoard(chessPieces);
 
-        King myKing = GetAlliedKing();
+        King myKing = GetAlliedKing(this.IsWhite);
         foreach (ChessPiece cp in chessPieces)
         {
             if (cp.IsWhite == this.IsWhite || cp.CompareTag("Pawn") || cp.CompareTag("Knight") || cp.CompareTag("King")) continue;
@@ -21,7 +21,7 @@ public abstract class ChessPiece : MonoBehaviour
             var myMoves = this.GetValidMoves(false);
             if (moves[PositionX, PositionY])
             {
-                bool[,] shortestPath = GetShortestPath(cp, this);
+                bool[,] shortestPath = GetShortestPath(cp, this, true);
 
                 if (shortestPath[myKing.PositionX, myKing.PositionY])
                 {
@@ -46,7 +46,6 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return returnedValue;
     }
-
     private static ChessPiece[,] MapPiecesPositionsOnBoard(List<ChessPiece> chessPieces)
     {
         ChessPiece[,] pieces = new ChessPiece[8, 8];
@@ -56,6 +55,38 @@ public abstract class ChessPiece : MonoBehaviour
         }
 
         return pieces;
+    }
+
+    public virtual bool[,] HandleKingChecked(int count, bool[,] returnedValue)
+    {
+        King myKing = GetAlliedKing(this.IsWhite);
+
+        if (count == 0) return returnedValue;        
+        if (count == 1)
+        {
+            ChessPiece attacker = myKing.ListOfDanger[0];
+            var moves = new bool[8, 8];
+            var attackerMoves = attacker.GetShortestPath(attacker, myKing, false);
+
+            for(int i = 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    if (attackerMoves[i, j] && returnedValue[i, j])
+                        moves[i, j] = true;
+                    else if (returnedValue[attacker.PositionX, attacker.PositionY])
+                        moves[attacker.PositionX, attacker.PositionY] = true;
+                    else
+                        moves[i, j] = false;
+                }
+            }          
+            return moves;
+        }
+        else if(count > 1)
+        {
+            Array.Clear(returnedValue, 0, 64);
+        }
+        return returnedValue;
     }
 
     private void FindTheChessPiecesOnThePath(ChessPiece[,] pieces, ChessPiece cp, List<ChessPiece> listOfPiecesOnThePath, List<Vector2Int> listOfPositions)
@@ -75,12 +106,12 @@ public abstract class ChessPiece : MonoBehaviour
         } while ((k >= 0 && k < 8) && (l >= 0 && l < 8));
     }
 
-    protected King GetAlliedKing()
+    public King GetAlliedKing(bool isWhite)
     {
         var kings = FindObjectsOfType<King>();
         foreach (var k in kings)
         {
-            if (k.IsWhite == IsWhite)
+            if (k.IsWhite == isWhite)
                 return k;
         }
         return null;
@@ -113,11 +144,12 @@ public abstract class ChessPiece : MonoBehaviour
             }
         }
     }
-    protected bool[,] GetShortestPath(ChessPiece attacker, ChessPiece defender)
+    public bool[,] GetShortestPath(ChessPiece attacker, ChessPiece defender, bool canPassThroughObjects)
     {
+        if (attacker.CompareTag("Pawn") || attacker.CompareTag("Knight") || attacker.CompareTag("King")) return new bool[8, 8];
         Vector2Int direction = CalcualteDirection(attacker, defender);
         bool[,] shortestPath = new bool[8, 8];
-        attacker.HandleOneDirectionLoopMovement(direction.x, direction.y, ref shortestPath, false, true);
+        attacker.HandleOneDirectionLoopMovement(direction.x, direction.y, ref shortestPath, false, canPassThroughObjects);
         return shortestPath;
     }
     Vector2Int CalcualteDirection(ChessPiece attacker, ChessPiece defender)
