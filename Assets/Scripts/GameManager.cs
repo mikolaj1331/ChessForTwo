@@ -1,42 +1,46 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameObject pauseMenuWindow;
+    [SerializeField] TextMeshProUGUI textBox;
+
     GUIController gui;
     BoardManager boardManager;
     public bool isWhiteTurn = true;
 
-    private void Start()
+    void Start()
     {
         gui = FindObjectOfType<GUIController>();
         boardManager = FindObjectOfType<BoardManager>();
     }
-    private void Update()
+    void Update()
     {
         if (gui.gameIsPaused) return;
         RespondToPlayerInput();
     }
 
-    private void RespondToPlayerInput()
+    void RespondToPlayerInput()
     {
         CheckIfValidClick();
     }
 
-    private void CheckIfValidClick()
+    void CheckIfValidClick()
     {
         RaycastHit[] rayHits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 50f, LayerMask.GetMask("ChessBoardBlock"));
         foreach (RaycastHit rayHit in rayHits)
         {
             ChessBlockEditor boardBlock = rayHit.transform.GetComponent<ChessBlockEditor>();
-            if (boardBlock == null) continue;
+            if (boardBlock == null || boardBlock.isBorder) continue;
             HandlePlayerInput(boardBlock);
         }
     }
 
-    private void HandlePlayerInput(ChessBlockEditor boardBlock)
+    void HandlePlayerInput(ChessBlockEditor boardBlock)
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -51,17 +55,8 @@ public class GameManager : MonoBehaviour
 
                 if (validMove)
                 {
-                    // TODO: FIX THE CHECKMATE ALGORITHM, IF THE KING IS NOT CHECKED BUT CANT MAKE ANYMOVES IT SHOULDNT COUNT AS CHECKMATE
-                    if (!boardManager.CheckIfNotCheckmate(isWhiteTurn))
-                    {
-                        string team;
-                        if (isWhiteTurn)
-                            team = "white player";
-                        else
-                            team = "black player";
-
-                        Debug.Log("Checkmate! " + team + " won!");
-                    }
+                    HandleCheckmate();
+                    
                     isWhiteTurn = !isWhiteTurn;
                     boardManager.turn++;
                 }
@@ -71,6 +66,29 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void HandleCheckmate()
+    {
+        if (!boardManager.CheckIfNotCheckmate(isWhiteTurn))
+        {
+            DisplayGameOverScreen();
+        }
+    }
+
+    private void DisplayGameOverScreen()
+    {
+        string team, toDisplay;
+        if (isWhiteTurn)
+            team = "White player";
+        else
+            team = "Black player";
+
+        toDisplay = "Game over!\n" + team + " has won!";
+
+        gui.PauseGame();
+        gui.OpenWindow(pauseMenuWindow);
+        gui.ChangeText(textBox, toDisplay);
     }
 }
 

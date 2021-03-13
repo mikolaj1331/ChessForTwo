@@ -139,7 +139,7 @@ public class Pawn : ChessPiece
         Queen queen = Instantiate<Queen>(queenPrefab, this.transform.position, this.transform.rotation);
         queen.PositionX = this.PositionX;
         queen.PositionY = this.PositionY;
-        queen.IsWhite = this.IsWhite;
+
         pieces[queen.PositionX, queen.PositionY] = queen;
         lista.Add(queen);
         gameObject.SetActive(false);

@@ -1,33 +1,28 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
 
 [ExecuteInEditMode]
 [SelectionBase]
 public class ChessBlockEditor : MonoBehaviour
 {
-    [SerializeField] float gridSize = 3f;
-    [SerializeField] float scaler = 1f;
+    [SerializeField] string displayText;
+    [SerializeField] TextMeshPro textComponent;
 
-    public float GridSize { get => gridSize; set => gridSize = value; }
-    public float Scaler { get => scaler; set => scaler = value; }
-
-    private void Start()
-    {
-        transform.localScale = new Vector3(scaler,scaler,scaler);    
-    }
+    public bool isBorder;
 
     void Update()
     {
-        SnapToGrid();
         UpdateName();
+        DisplayText();
     }
 
-    private void SnapToGrid()
+    void DisplayText()
     {
-        transform.position = new Vector3(GetGridPosition().x * gridSize, 0f, GetGridPosition().y * gridSize);
+        if(isBorder)
+            textComponent.text = displayText;
     }
 
     private void UpdateName()
@@ -36,6 +31,6 @@ public class ChessBlockEditor : MonoBehaviour
     }
     Vector2Int GetGridPosition()
     {
-        return new Vector2Int(Mathf.RoundToInt(transform.position.x / gridSize), Mathf.RoundToInt(transform.position.z / gridSize));
+        return new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
     }
 }

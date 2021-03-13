@@ -43,4 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411c78edb27aa4d4f9963bd18b32a076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenuWindow: {fileID: 0}
+  textBox: {fileID: 0}
   isWhiteTurn: 1

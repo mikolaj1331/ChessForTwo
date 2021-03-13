@@ -192,6 +192,7 @@ public class BoardManager : MonoBehaviour
     {
         foreach (var block in blocks)
         {
+            if (block.isBorder) continue;
             if (validMoves[(int)block.transform.position.x, (int)block.transform.position.z])
             {
                 GameObject highlightObject = block.transform.GetChild(6).gameObject;
@@ -200,6 +201,13 @@ public class BoardManager : MonoBehaviour
                     highlightObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
                 else
                     highlightObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                if(Pieces[(int)block.transform.position.x, (int)block.transform.position.z])
+                {
+                    highlightObject.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                    highlightObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                }
+                else
+                    highlightObject.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
             }
         }
     }
@@ -212,6 +220,7 @@ public class BoardManager : MonoBehaviour
     {
         foreach(var block in blocks)
         {
+            if (block.isBorder) continue;
             GameObject highlightObject = block.transform.GetChild(6).gameObject;
             highlightObject.gameObject.SetActive(false);
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GUIController : MonoBehaviour
@@ -26,5 +27,10 @@ public class GUIController : MonoBehaviour
     public void CloseWindow(GameObject go)
     {
         go.SetActive(false);
+    }
+
+    public void ChangeText(TextMeshProUGUI textBox, string text)
+    {
+        textBox.text = text;
     }
 }
