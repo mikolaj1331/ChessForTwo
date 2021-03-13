@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("You clicked " + boardBlock.name);
+            //Debug.Log("You clicked " + boardBlock.name);
             if (boardManager.selectedChessPiece == null)
             {
                 boardManager.SelectChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z, isWhiteTurn);
@@ -51,6 +51,17 @@ public class GameManager : MonoBehaviour
 
                 if (validMove)
                 {
+                    // TODO: FIX THE CHECKMATE ALGORITHM, IF THE KING IS NOT CHECKED BUT CANT MAKE ANYMOVES IT SHOULDNT COUNT AS CHECKMATE
+                    if (!boardManager.CheckIfNotCheckmate(isWhiteTurn))
+                    {
+                        string team;
+                        if (isWhiteTurn)
+                            team = "white player";
+                        else
+                            team = "black player";
+
+                        Debug.Log("Checkmate! " + team + " won!");
+                    }
                     isWhiteTurn = !isWhiteTurn;
                     boardManager.turn++;
                 }

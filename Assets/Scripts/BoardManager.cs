@@ -24,7 +24,7 @@ public class BoardManager : MonoBehaviour
         logger = GetComponent<MatchLogger>();
         Pieces = InitialSetup();
     }
-    private ChessPiece[,] InitialSetup()
+    ChessPiece[,] InitialSetup()
     {
         activeChessPieces = new List<ChessPiece>();
         ChessPiece[,] pieces = new ChessPiece[8,8];
@@ -48,24 +48,31 @@ public class BoardManager : MonoBehaviour
         {
             selectedChessPiece = null;
             return;
-        }       
-        ValidMoves = piece.GetValidMoves(false);
-        ValidMoves = piece.FindInvalidMoves(ValidMoves, activeChessPieces);
-        IsAlliedKingChecked(piece);
+        }
 
+        ValidMoves = GetActualValidMoves(piece);
         ProcessVisuals(isWhiteTurn, piece);
         selectedChessPiece = piece;
     }
+    bool[,] GetActualValidMoves(ChessPiece piece)
+    {
+        ValidMoves = piece.GetValidMoves(false);
+        ValidMoves = piece.FindInvalidMoves(ValidMoves, activeChessPieces);
+        ValidMoves = IsAlliedKingChecked(piece, ValidMoves);
 
-    private void IsAlliedKingChecked(ChessPiece piece)
+        return ValidMoves;
+    }
+    bool[,] IsAlliedKingChecked(ChessPiece piece, bool[,] validMoves)
     {
         King king = piece.GetAlliedKing(piece.IsWhite);
         List<ChessPiece> list = king.ListOfDanger;
-        if(list.Count > 0)
-            ValidMoves = piece.HandleKingChecked(list.Count, ValidMoves);
-        return;
-    }
+        if (list.Count > 0)
+            validMoves = piece.HandleKingChecked(list.Count, validMoves);
+        else
+            king.IsChecked = false;
 
+        return validMoves;
+    }
     public bool MoveChessPiece(int x, int y, bool isWhiteTurn)
     {
         if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
@@ -90,7 +97,43 @@ public class BoardManager : MonoBehaviour
         else
             return false;
     }
-    private void CheckIfCanCaptureEnemyKing(List<ChessPiece> activeChessPieces, ChessPiece selectedChessPiece)
+    public bool CheckIfNotCheckmate(bool isWhiteTurn)
+    {
+        bool returnedValue = true;
+        var kings = FindObjectsOfType<King>();
+
+        foreach(var k in kings)
+        {
+            if (k.IsWhite == isWhiteTurn) continue;
+
+            returnedValue = CheckIfAnyPossibleMovesValid(k);
+            if (returnedValue) return returnedValue;
+
+            if(k.IsChecked)
+            {
+                foreach (var ch in activeChessPieces)
+                {
+                    if (ch.IsWhite == isWhiteTurn || ch.CompareTag("King")) continue;
+                    returnedValue = CheckIfAnyPossibleMovesValid(ch);
+                    if (returnedValue) return returnedValue;
+                }
+            }   
+            else
+            {
+                returnedValue = true;
+            }
+        }
+        return returnedValue;
+    }
+    bool CheckIfAnyPossibleMovesValid(ChessPiece chessPiece)
+    {
+        var moves = GetActualValidMoves(chessPiece);
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+                if (moves[i, j]) return true;
+        return false;
+    }
+    void CheckIfCanCaptureEnemyKing(List<ChessPiece> activeChessPieces, ChessPiece selectedChessPiece)
     {
         var kings = FindObjectsOfType<King>();
 
@@ -104,6 +147,7 @@ public class BoardManager : MonoBehaviour
                     if (moves[k.PositionX, k.PositionY])
                     {
                         k.ListOfDanger.Add(ch);
+                        k.IsChecked = true;
                         return;
                     }
                 }
@@ -112,7 +156,7 @@ public class BoardManager : MonoBehaviour
             }
         }
     }
-    private void CheckForPromotion(ChessPiece selectedChessPiece)
+    void CheckForPromotion(ChessPiece selectedChessPiece)
     {
         if(selectedChessPiece.CompareTag("Pawn"))
         {

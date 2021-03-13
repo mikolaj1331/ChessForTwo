@@ -5,8 +5,10 @@ using UnityEngine;
 public class King : ChessPiece
 {
     List<ChessPiece> listOfDanger;
+    bool isChecked = false;
 
     public List<ChessPiece> ListOfDanger { get => listOfDanger; set => listOfDanger = value; }
+    public bool IsChecked { get => isChecked; set => isChecked = value; }
 
     private void Start()
     {
