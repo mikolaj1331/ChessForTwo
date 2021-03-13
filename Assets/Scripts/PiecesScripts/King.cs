@@ -79,7 +79,7 @@ public class King : ChessPiece
     }
 
 
-    public override bool[,] HandleKingChecked(int count, bool[,] returnedValue)
+    public override bool[,] HandleKingCheckedMoves(int count, bool[,] returnedValue)
     {
         if (count == 0) return returnedValue;
 

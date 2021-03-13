@@ -60,6 +60,17 @@ public class BoardManager : MonoBehaviour
         ValidMoves = piece.FindInvalidMoves(ValidMoves, activeChessPieces);
         ValidMoves = IsAlliedKingChecked(piece, ValidMoves);
 
+        if (piece.CompareTag("Pawn"))
+        {
+            if(logger.GetMatchLogLength() != 0)
+            {
+                MoveLogger lastMove = logger.GetLastMove();
+                if(lastMove.ChessPiece.CompareTag("Pawn") && Mathf.Abs(lastMove.DestinationPos.y - lastMove.StartingPos.y) == 2)
+                {
+                    ValidMoves = piece.GetComponent<Pawn>().HandleEnPasse(ValidMoves);
+                }
+            }            
+        }
         return ValidMoves;
     }
     bool[,] IsAlliedKingChecked(ChessPiece piece, bool[,] validMoves)
@@ -67,7 +78,7 @@ public class BoardManager : MonoBehaviour
         King king = piece.GetAlliedKing(piece.IsWhite);
         List<ChessPiece> list = king.ListOfDanger;
         if (list.Count > 0)
-            validMoves = piece.HandleKingChecked(list.Count, validMoves);
+            validMoves = piece.HandleKingCheckedMoves(list.Count, validMoves);
         else
             king.IsChecked = false;
 
@@ -78,20 +89,25 @@ public class BoardManager : MonoBehaviour
         if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
         if (ValidMoves[x, y])
         {
-            if (Pieces[x, y] != null)
+            if(selectedChessPiece.CapturedPiece(Pieces[x, y], activeChessPieces))
             {
                 ChessPiece target = Pieces[x, y];
+                logger.LogMovement(selectedChessPiece, target, x, y, turn);
                 King king = target.GetAlliedKing(!target.IsWhite);
-                if (king.ListOfDanger.Contains(target)) king.ListOfDanger.Remove(target);
-                target.gameObject.SetActive(false);
-                activeChessPieces.Remove(target);
+                if (king.ListOfDanger.Contains(target)) king.ListOfDanger.Remove(target);                
             }
-            logger.LogMovement(selectedChessPiece, x, y, turn);
+            else
+            {
+                logger.LogMovement(selectedChessPiece, null, x, y, turn);
+            }
+            
             ProcessMovement(x, y);
             CheckForPromotion(selectedChessPiece);
             CheckIfCanCaptureEnemyKing(activeChessPieces, selectedChessPiece);
+            CheckForEnPasse(selectedChessPiece);
             ResetVisuals();
             selectedChessPiece = null;
+
             return true;
         }
         else
@@ -124,6 +140,29 @@ public class BoardManager : MonoBehaviour
             }
         }
         return returnedValue;
+    }
+    void CheckForEnPasse(ChessPiece selectedChessPiece)
+    {
+        if (selectedChessPiece.CompareTag("Pawn"))
+        {
+            MoveLogger lastMove = logger.GetLastMove();
+
+            if (lastMove.DestinationPos.x != lastMove.StartingPos.x && lastMove.CapturedChessPiece == null)
+            {
+                ChessPiece target;
+                if (lastMove.ChessPiece.IsWhite)
+                {
+                    target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY - 1];
+                    lastMove.ChessPiece.CapturedPiece(target, activeChessPieces);
+                }
+                else
+                {
+                    target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY + 1];
+                    lastMove.ChessPiece.CapturedPiece(target, activeChessPieces);
+                }
+                logger.EditLog(lastMove, lastMove.ChessPiece, target, lastMove.StartingPos, lastMove.DestinationPos, lastMove.Turn);
+            }
+        }
     }
     bool CheckIfAnyPossibleMovesValid(ChessPiece chessPiece)
     {
