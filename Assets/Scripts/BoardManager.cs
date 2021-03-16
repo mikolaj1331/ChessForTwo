@@ -7,12 +7,12 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     public static BoardManager Instance { set; get; }
+    public List<ChessPiece> activeChessPieces;
     public ChessPiece[,] Pieces { set; get; }
     public ChessPiece selectedChessPiece;
     public int turn;
 
     bool[,] ValidMoves { set; get; }
-    List<ChessPiece> activeChessPieces;
     ChessBlockEditor[] blocks;
     MatchLogger logger;
 
@@ -102,17 +102,47 @@ public class BoardManager : MonoBehaviour
                 logger.LogMovement(selectedChessPiece, null, x, y, turn);
             }
             
-            ProcessMovement(x, y);
+            ProcessMovement(x, y,selectedChessPiece);
             CheckForPromotion(selectedChessPiece);
             CheckIfCanCaptureEnemyKing(activeChessPieces, selectedChessPiece);
             CheckForEnPasse(selectedChessPiece);
+            CheckForCastling(selectedChessPiece);
             ResetVisuals();
+
             selectedChessPiece = null;
 
             return true;
         }
         else
             return false;
+    }
+
+    private void CheckForCastling(ChessPiece selectedChessPiece)
+    {
+        if(selectedChessPiece.CompareTag("King"))
+        {
+            MoveLogger lastMove = logger.GetLastMove();
+            float direction = lastMove.DestinationPos.x - lastMove.StartingPos.x;
+            float absoluteDirection = Mathf.Abs(direction);
+
+            if (absoluteDirection == 2)
+            {
+                ChessPiece rook;
+                if (lastMove.DestinationPos.x == 2)
+                {
+                    rook = Pieces[0, selectedChessPiece.PositionY];
+                }
+                else if (lastMove.DestinationPos.x == 6)
+                {
+                    rook = Pieces[7, selectedChessPiece.PositionY];
+                }
+                else
+                    return;
+
+                direction /= absoluteDirection;
+                ProcessMovement((int)selectedChessPiece.PositionX - (int)direction, selectedChessPiece.PositionY, rook);
+            }
+        }
     }
     public bool CheckIfNotCheckmate(bool isWhiteTurn)
     {
@@ -207,13 +237,14 @@ public class BoardManager : MonoBehaviour
         }
         return;
     }
-    void ProcessMovement(int x, int y)
+    void ProcessMovement(int destinationX, int destinationY, ChessPiece selectedChessPiece)
     {
         Pieces[selectedChessPiece.PositionX, selectedChessPiece.PositionY] = null;
-        selectedChessPiece.transform.position = new Vector3(x, selectedChessPiece.transform.position.y, y);
-        selectedChessPiece.PositionX = x;
-        selectedChessPiece.PositionY = y;
-        Pieces[x, y] = selectedChessPiece;        
+        selectedChessPiece.transform.position = new Vector3(destinationX, selectedChessPiece.transform.position.y, destinationY);
+        selectedChessPiece.PositionX = destinationX;
+        selectedChessPiece.PositionY = destinationY;
+        Pieces[destinationX, destinationY] = selectedChessPiece;
+        selectedChessPiece.hasMoved = true;
     }
     void ProcessVisuals(bool turn, ChessPiece piece)
     {

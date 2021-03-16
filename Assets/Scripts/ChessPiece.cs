@@ -8,6 +8,7 @@ public abstract class ChessPiece : MonoBehaviour
     public int PositionX {set; get;}
     public int PositionY { set; get; }
     public bool IsWhite;
+    public bool hasMoved = false;
     public abstract bool[,] GetValidMoves(bool canCaptureAllies);
     public virtual bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
     {
@@ -46,6 +47,7 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return returnedValue;
     }  
+
     public virtual bool[,] HandleKingCheckedMoves(int count, bool[,] returnedValue)
     {
         King myKing = GetAlliedKing(this.IsWhite);
@@ -97,15 +99,15 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return false;
     }
-    protected void HandleOneDirectionLoopMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
+    protected void HandleOneDirectionLoopMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
     {
         int i = PositionX;
         int j = PositionY;
 
         while (true)
         {
-            i += x;
-            j += y;
+            i += directionX;
+            j += directionY;
 
             if (i < 0 || i >= 8 || j < 0 || j >= 8)
                 break;

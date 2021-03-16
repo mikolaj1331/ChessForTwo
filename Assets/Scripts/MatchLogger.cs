@@ -38,7 +38,7 @@ public class MatchLogger : MonoBehaviour
             if (log.CapturedChessPiece != null)
                 capturedName = " x " + log.CapturedChessPiece.name;
             else
-                capturedName = "";
+                capturedName = "\t\t";
             name = name.Replace("(Clone)", "");
             string xStartValue = SwitchPositionToLetter(log.StartingPos.x);
             string xDestValue = SwitchPositionToLetter(log.DestinationPos.x);
@@ -79,6 +79,8 @@ public class MoveLogger
     ChessPiece chessPiece;
     ChessPiece capturedChessPiece;
     int turn;
+
+    enum MoveType { Standard, Capture, EnPassant, QueenSideCastling, KingSideCastling, Check, Checkmate}
 
     public Vector2 StartingPos { get => startingPos; set => startingPos = value; }
     public Vector2 DestinationPos { get => destinationPos; set => destinationPos = value; }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,41 @@ public class King : ChessPiece
                 HandleKingMovement(i, j, ref returnedValue, canCaptureAllies);
             }
         }
+
+        HandleCastlingMovement(ref returnedValue, -1);
+        HandleCastlingMovement(ref returnedValue, 1);
+
+        return returnedValue;
+    }
+
+    bool[,] HandleCastlingMovement(ref bool[,] returnedValue, int direction)
+    {
+        if (hasMoved) return returnedValue;
+
+        int boundary = 0;
+        if (direction == -1) boundary = 0;
+        else if (direction == 1) boundary = 7;
+
+        bool[,] moves = new bool[8, 8];
+        HandleOneDirectionLoopMovement(direction, 0, ref moves, false, false);
+        if (moves[boundary, this.PositionY] != false || moves[boundary - direction, this.PositionY] != true) return returnedValue;
+
+        ChessPiece rook = BoardManager.Instance.Pieces[boundary - direction, this.PositionY];
+        if (rook != null) return returnedValue;
+
+        rook = BoardManager.Instance.Pieces[boundary, this.PositionY];
+        if (rook.hasMoved) return returnedValue;
+
+        foreach (var piece in BoardManager.Instance.activeChessPieces)
+        {
+            if (piece.IsWhite == this.IsWhite || piece.CompareTag("King")) continue;
+
+            var pieceMoves = piece.GetValidMoves(false);
+            if (pieceMoves[this.PositionX + (direction * 2), this.PositionY] || pieceMoves[this.PositionX + direction, this.PositionY]) return returnedValue;
+        }
+
+        returnedValue[PositionX + (direction * 2), PositionY] = true;
+
         return returnedValue;
     }
 
@@ -77,7 +113,6 @@ public class King : ChessPiece
         }
         return returnedValue;
     }
-
 
     public override bool[,] HandleKingCheckedMoves(int count, bool[,] returnedValue)
     {
