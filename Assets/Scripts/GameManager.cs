@@ -26,12 +26,10 @@ public class GameManager : MonoBehaviour
         if (gui.gameIsPaused) return;
         RespondToPlayerInput();
     }
-
     void RespondToPlayerInput()
     {
         CheckIfValidClick();
     }
-
     void CheckIfValidClick()
     {
         RaycastHit[] rayHits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 50f, LayerMask.GetMask("ChessBoardBlock"));
@@ -42,7 +40,6 @@ public class GameManager : MonoBehaviour
             HandlePlayerInput(boardBlock);
         }
     }
-
     void HandlePlayerInput(ChessBlockEditor boardBlock)
     {
         if (Input.GetMouseButtonDown(0))
@@ -81,7 +78,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     void HandleCheckmate()
     {
         if (!boardManager.CheckIfNotCheckmate(isWhiteTurn))
@@ -89,7 +85,6 @@ public class GameManager : MonoBehaviour
             DisplayGameOverScreen();
         }
     }
-
     private void DisplayGameOverScreen()
     {
         string team, toDisplay;

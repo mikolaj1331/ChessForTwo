@@ -10,12 +10,10 @@ public abstract class ChessPiece : MonoBehaviour
     public bool IsWhite;
     public bool hasMoved = false;
     public abstract bool[,] GetValidMoves(bool canCaptureAllies);
-    public virtual bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
+    public virtual bool[,] FindInvalidMoves(bool[,] returnedValue)
     {
-        ChessPiece[,] pieces = MapPiecesPositionsOnBoard(chessPieces);
-
         King myKing = GetAlliedKing(this.IsWhite);
-        foreach (ChessPiece cp in chessPieces)
+        foreach (ChessPiece cp in BoardManager.Instance.activeChessPieces)
         {
             if (cp.IsWhite == this.IsWhite || cp.CompareTag("Pawn") || cp.CompareTag("Knight") || cp.CompareTag("King")) continue;
             var moves = cp.GetValidMoves(false);
@@ -29,7 +27,7 @@ public abstract class ChessPiece : MonoBehaviour
                     List<ChessPiece> listOfPiecesOnThePath = new List<ChessPiece>();
                     List<Vector2Int> listOfPositions = new List<Vector2Int>();
 
-                    FindTheChessPiecesOnThePath(pieces, cp, listOfPiecesOnThePath, listOfPositions);
+                    FindTheChessPiecesOnThePath(cp, listOfPiecesOnThePath, listOfPositions);
 
                     if (listOfPiecesOnThePath[0] == this && listOfPiecesOnThePath[1] == myKing)
                     {
@@ -47,7 +45,6 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return returnedValue;
     }  
-
     public virtual bool[,] HandleKingCheckedMoves(int count, bool[,] returnedValue)
     {
         King myKing = GetAlliedKing(this.IsWhite);
@@ -89,11 +86,11 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return null;
     }
-    public bool CapturedPiece(ChessPiece chessPiece, List<ChessPiece> listOfPieces)
+    public bool CapturedPiece(ChessPiece chessPiece)
     {
         if (chessPiece != null)
         {
-            listOfPieces.Remove(chessPiece);
+            BoardManager.Instance.activeChessPieces.Remove(chessPiece);
             chessPiece.gameObject.SetActive(false);
             return true;
         }
@@ -147,30 +144,20 @@ public abstract class ChessPiece : MonoBehaviour
 
         return new Vector2Int(directionX, directionY);
     }
-    void FindTheChessPiecesOnThePath(ChessPiece[,] pieces, ChessPiece cp, List<ChessPiece> listOfPiecesOnThePath, List<Vector2Int> listOfPositions)
+    void FindTheChessPiecesOnThePath(ChessPiece attacker, List<ChessPiece> listOfPiecesOnThePath, List<Vector2Int> listOfPositions)
     {
-        Vector2Int direction = CalcualteDirection(cp, this);
+        Vector2Int direction = CalcualteDirection(attacker, this);
 
-        int k = cp.PositionX + direction.x, l = cp.PositionY + direction.y;
+        int k = attacker.PositionX + direction.x, l = attacker.PositionY + direction.y;
         do
         {
-            if (pieces[k, l] != null)
+            if (BoardManager.Instance.Pieces[k, l] != null)
             {
-                listOfPiecesOnThePath.Add(pieces[k, l]);
+                listOfPiecesOnThePath.Add(BoardManager.Instance.Pieces[k, l]);
             }
             listOfPositions.Add(new Vector2Int(k, l));
             k += direction.x;
             l += direction.y;
         } while ((k >= 0 && k < 8) && (l >= 0 && l < 8));
-    }
-    ChessPiece[,] MapPiecesPositionsOnBoard(List<ChessPiece> chessPieces)
-    {
-        ChessPiece[,] pieces = new ChessPiece[8, 8];
-        foreach (ChessPiece ch in chessPieces)
-        {
-            pieces[ch.PositionX, ch.PositionY] = ch;
-        }
-
-        return pieces;
     }
 }

@@ -60,7 +60,7 @@ public class BoardManager : MonoBehaviour
         if (returnedValue == false)
         {
             MoveLogger lastMove = logger.GetLastMove();
-            logger.EditLog(lastMove, MoveType.Checkmate);
+            logger.EditLog(lastMove, lastMove.MoveType, false, true);
         }
 
         return returnedValue;
@@ -69,17 +69,17 @@ public class BoardManager : MonoBehaviour
     {
         if (selectedChessPiece.IsWhite != isWhiteTurn) return false;
         if (ValidMoves[x, y])
-        {
-            if (selectedChessPiece.CapturedPiece(Pieces[x, y], activeChessPieces))
+        {            
+            if (selectedChessPiece.CapturedPiece(Pieces[x, y]))
             {
                 ChessPiece target = Pieces[x, y];
-                logger.LogMovement(MoveType.Capture, selectedChessPiece, target, x, y, turn);
+                logger.LogMovement(MoveType.Move, selectedChessPiece, target, x, y, turn, true, false, false);
                 King king = target.GetAlliedKing(!target.IsWhite);
                 if (king.ListOfDanger.Contains(target)) king.ListOfDanger.Remove(target);
             }
             else
             {
-                logger.LogMovement(MoveType.Move, selectedChessPiece, null, x, y, turn);
+                logger.LogMovement(MoveType.Move, selectedChessPiece, null, x, y, turn, false, false, false);
             }
 
             ProcessMovement(x, y, selectedChessPiece);
@@ -120,7 +120,7 @@ public class BoardManager : MonoBehaviour
     bool[,] GetActualValidMoves(ChessPiece piece)
     {
         ValidMoves = piece.GetValidMoves(false);
-        ValidMoves = piece.FindInvalidMoves(ValidMoves, activeChessPieces);
+        ValidMoves = piece.FindInvalidMoves(ValidMoves);
         ValidMoves = IsAlliedKingChecked(piece, ValidMoves);
 
         if (piece.CompareTag("Pawn"))
@@ -152,7 +152,7 @@ public class BoardManager : MonoBehaviour
     {
         CheckForPromotion();
         CheckIfCanCaptureEnemyKing();
-        CheckForEnPasse();
+        CheckForEnPassant();
         CheckForCastling();
     }
     void CheckForCastling()
@@ -169,22 +169,24 @@ public class BoardManager : MonoBehaviour
                 if (lastMove.DestinationPos.x == 2)
                 {
                     rook = Pieces[0, selectedChessPiece.PositionY];
-                    logger.EditLog(lastMove, MoveType.QueenSideCastling);
+                    logger.EditLog(lastMove, MoveType.QueenSideCastling, lastMove.IsCheck, lastMove.IsCheckmate);
                 }
                 else if (lastMove.DestinationPos.x == 6)
                 {
                     rook = Pieces[7, selectedChessPiece.PositionY];
-                    logger.EditLog(lastMove, MoveType.KingSideCastling);
+                    logger.EditLog(lastMove, MoveType.KingSideCastling, lastMove.IsCheck, lastMove.IsCheckmate);
                 }
                 else
                     return;
+
+                UpdateLoggerIfCheckMove(lastMove, rook);
 
                 direction /= absoluteDirection;
                 ProcessMovement((int)selectedChessPiece.PositionX - (int)direction, selectedChessPiece.PositionY, rook);
             }
         }
     }    
-    void CheckForEnPasse()
+    void CheckForEnPassant()
     {
         if (selectedChessPiece.CompareTag("Pawn"))
         {
@@ -196,14 +198,16 @@ public class BoardManager : MonoBehaviour
                 if (lastMove.ChessPiece.IsWhite)
                 {
                     target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY - 1];
-                    lastMove.ChessPiece.CapturedPiece(target, activeChessPieces);
+                    lastMove.ChessPiece.CapturedPiece(target);
                 }
                 else
                 {
                     target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY + 1];
-                    lastMove.ChessPiece.CapturedPiece(target, activeChessPieces);
+                    lastMove.ChessPiece.CapturedPiece(target);
                 }
-                logger.EditLog(lastMove, MoveType.EnPassant, target);
+
+                logger.EditLog(lastMove, MoveType.EnPassant, target, lastMove.IsCheck, lastMove.IsCheckmate);
+                UpdateLoggerIfCheckMove(lastMove,selectedChessPiece);               
             }
         }
     }
@@ -232,7 +236,7 @@ public class BoardManager : MonoBehaviour
                         k.IsChecked = true;
 
                         MoveLogger lastMove = logger.GetLastMove();
-                        logger.EditLog(lastMove, MoveType.Check);
+                        logger.EditLog(lastMove, lastMove.MoveType,true,lastMove.IsCheckmate);
 
                         return;
                     }
@@ -248,13 +252,21 @@ public class BoardManager : MonoBehaviour
         {
             if ((selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 7) || (!selectedChessPiece.IsWhite && selectedChessPiece.PositionY == 0))
             {
-                Pieces = selectedChessPiece.GetComponent<Pawn>().PromoteToQueen(Pieces,activeChessPieces);
+                selectedChessPiece.GetComponent<Pawn>().PromotePawn();
 
                 MoveLogger lastMove = logger.GetLastMove();
-                logger.EditLog(lastMove, MoveType.PawnPromotion);
+                logger.EditLog(lastMove, MoveType.PawnPromotion, lastMove.IsCheck, lastMove.IsCheckmate);
+                UpdateLoggerIfCheckMove(lastMove,selectedChessPiece);
             }
         }
         return;
+    }
+    void UpdateLoggerIfCheckMove(MoveLogger lastMove, ChessPiece chessPieceThatChecks)
+    {
+        var moves = chessPieceThatChecks.GetValidMoves(false);
+        King enemyKing = chessPieceThatChecks.GetAlliedKing(!chessPieceThatChecks.IsWhite);
+        if (moves[enemyKing.PositionX, enemyKing.PositionY])
+            logger.EditLog(lastMove, lastMove.MoveType, true, lastMove.IsCheckmate);
     }
     void ProcessMovement(int destinationX, int destinationY, ChessPiece selectedChessPiece)
     {

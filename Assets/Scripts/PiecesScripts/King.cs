@@ -65,28 +65,28 @@ public class King : ChessPiece
         return returnedValue;
     }
 
-    void HandleKingMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
+    void HandleKingMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies)
     {
-        if(PositionX + x < 8 && PositionX + x >= 0 && PositionY + y < 8 && PositionY + y >= 0)
+        if(PositionX + directionX < 8 && PositionX + directionX >= 0 && PositionY + directionY < 8 && PositionY + directionY >= 0)
         {
-            ChessPiece cp = BoardManager.Instance.Pieces[PositionX + x, PositionY + y];
+            ChessPiece cp = BoardManager.Instance.Pieces[PositionX + directionX, PositionY + directionY];
             if (cp != null)
             {
                 if (cp.IsWhite != IsWhite)
-                    returnedValue[PositionX + x, PositionY + y] = true;
+                    returnedValue[PositionX + directionX, PositionY + directionY] = true;
                 if (cp.IsWhite == IsWhite && canCaptureAllies)
-                    returnedValue[PositionX + x, PositionY + y] = true;
+                    returnedValue[PositionX + directionX, PositionY + directionY] = true;
             }
             else
             {
-                returnedValue[PositionX + x, PositionY + y] = true;
+                returnedValue[PositionX + directionX, PositionY + directionY] = true;
             }
         }
     }
 
-    public override bool[,] FindInvalidMoves(bool[,] returnedValue, List<ChessPiece> chessPieces)
+    public override bool[,] FindInvalidMoves(bool[,] returnedValue)
     {
-        foreach (var pi in chessPieces)
+        foreach (var pi in BoardManager.Instance.activeChessPieces)
         {
             if (pi.IsWhite == this.IsWhite) continue;
             var moves = pi.GetValidMoves(true);

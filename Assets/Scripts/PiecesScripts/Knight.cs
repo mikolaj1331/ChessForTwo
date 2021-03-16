@@ -28,20 +28,20 @@ public class Knight : ChessPiece
         return returnedValue;
     }
 
-    public void HandleKnightMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
+    public void HandleKnightMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies)
     {
         ChessPiece cp;
-        if(x >= 0 && x < 8 && y >= 0 && y < 8)
+        if(directionX >= 0 && directionX < 8 && directionY >= 0 && directionY < 8)
         {
-            cp = BoardManager.Instance.Pieces[x, y];
+            cp = BoardManager.Instance.Pieces[directionX, directionY];
             if (cp == null)
-                returnedValue[x, y] = true;
+                returnedValue[directionX, directionY] = true;
             else
             {
                 if (cp.IsWhite != IsWhite && !canCaptureAllies)
-                    returnedValue[x, y] = true;
+                    returnedValue[directionX, directionY] = true;
                 if (cp.IsWhite == IsWhite && canCaptureAllies)
-                    returnedValue[x, y] = true;
+                    returnedValue[directionX, directionY] = true;
             }
         }
     }

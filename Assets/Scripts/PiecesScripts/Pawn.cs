@@ -60,31 +60,30 @@ public class Pawn : ChessPiece
         }
         return returnedValue;
     }
-    public bool CanAttack(int x, int y)
+    public bool CanAttack(int targetPositionX, int targerPositionY)
     {
         if(IsWhite)
         {
-            if((x == PositionX - 1 || x == PositionX + 1) && y == PositionY + 1)
+            if((targetPositionX == PositionX - 1 || targetPositionX == PositionX + 1) && targerPositionY == PositionY + 1)
                 return true;
             return false;
         }
         else
         {
-            if ((x == PositionX - 1 || x == PositionX + 1) && y == PositionY - 1)
+            if ((targetPositionX == PositionX - 1 || targetPositionX == PositionX + 1) && targerPositionY == PositionY - 1)
                 return true;
             return false;
         }
     }
-    public ChessPiece[,] PromoteToQueen(ChessPiece[,] pieces, List<ChessPiece> lista)
+    public void PromotePawn()
     {
         Queen queen = Instantiate<Queen>(queenPrefab, this.transform.position, this.transform.rotation);
         queen.PositionX = this.PositionX;
         queen.PositionY = this.PositionY;
 
-        pieces[queen.PositionX, queen.PositionY] = queen;
-        lista.Add(queen);
+        BoardManager.Instance.Pieces[queen.PositionX, queen.PositionY] = queen;
+        BoardManager.Instance.activeChessPieces.Add(queen);
         gameObject.SetActive(false);
-        return pieces;
     }
 
     void HandleDiagonalRightMovement(ref bool[,] returnedValue, bool canCaptureAllies)
@@ -172,18 +171,18 @@ public class Pawn : ChessPiece
             }
         }
     }
-    void HandlePawnAttackMovement(int x, int y, ref bool[,] returnedValue, bool canCaptureAllies)
+    void HandlePawnAttackMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies)
     {
-        if (PositionX + x >= 0 && PositionX + x < 8 && PositionY + y >= 0 && PositionY + y < 8)
+        if (PositionX + directionX >= 0 && PositionX + directionX < 8 && PositionY + directionY >= 0 && PositionY + directionY < 8)
         {
-            ChessPiece c1 = BoardManager.Instance.Pieces[PositionX + x, PositionY + y];
+            ChessPiece c1 = BoardManager.Instance.Pieces[PositionX + directionX, PositionY + directionY];
 
             if (c1 != null)
             {
                 if (c1.IsWhite != IsWhite && !canCaptureAllies)
-                    returnedValue[PositionX + x, PositionY + y] = true;
+                    returnedValue[PositionX + directionX, PositionY + directionY] = true;
                 if (c1.IsWhite == IsWhite && canCaptureAllies)
-                    returnedValue[PositionX + x, PositionY + y] = true;
+                    returnedValue[PositionX + directionX, PositionY + directionY] = true;
             }
 
         }
