@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 
+
+public enum MoveType { Move, Capture, EnPassant, QueenSideCastling, KingSideCastling, Check, Checkmate, PawnPromotion }
 public class MatchLogger : MonoBehaviour
 {
     List<MoveLogger> matchLog;
@@ -11,22 +13,31 @@ public class MatchLogger : MonoBehaviour
     {
         matchLog = new List<MoveLogger>();
     }
-    public void LogMovement(ChessPiece chessPiece, ChessPiece capturedChessPiece, float x, float y, int turn)
+    public void LogMovement(MoveType moveType, ChessPiece chessPiece, ChessPiece capturedChessPiece, float x, float y, int turn)
     {
-        matchLog.Add(new MoveLogger(chessPiece, capturedChessPiece, new Vector2(chessPiece.PositionX, chessPiece.PositionY+1), new Vector2(x, y+1), turn));
+        int count = matchLog.Count + 1;
+        matchLog.Add(new MoveLogger(count, moveType, chessPiece, capturedChessPiece, new Vector2(chessPiece.PositionX, chessPiece.PositionY+1), new Vector2(x, y+1), turn));
     }
-    public void EditLog(MoveLogger move, ChessPiece chessPiece, ChessPiece capturedChessPiece, Vector2 startingPosition, Vector2 destinationPosition, int turn)
+    public void EditLog(MoveLogger move, MoveType moveType, ChessPiece capturedChessPiece)
     {
         if(matchLog.Contains(move))
         {
-            MoveLogger log = matchLog.Find(x => x.Turn == turn);
-            log.ChessPiece = chessPiece;
+            MoveLogger log = matchLog.Find(x => x.MoveId == move.MoveId);
+            log.MoveType = moveType;
             log.CapturedChessPiece = capturedChessPiece;
-            log.StartingPos = startingPosition;
-            log.DestinationPos = destinationPosition;
         }
         return;
     }
+    public void EditLog(MoveLogger move, MoveType moveType)
+    {
+        if (matchLog.Contains(move))
+        {
+            MoveLogger log = matchLog.Find(x => x.MoveId == move.MoveId);
+            log.MoveType = moveType;
+        }
+        return;
+    }
+
     public void PrintLogger(GameObject go)
     {
         TextMeshProUGUI text = go.GetComponent<TextMeshProUGUI>();
@@ -74,22 +85,27 @@ public class MatchLogger : MonoBehaviour
 
 public class MoveLogger
 {
+    int moveId;
+    MoveType moveType;
     Vector2 startingPos;
     Vector2 destinationPos;
     ChessPiece chessPiece;
     ChessPiece capturedChessPiece;
     int turn;
 
-    enum MoveType { Standard, Capture, EnPassant, QueenSideCastling, KingSideCastling, Check, Checkmate}
-
+    public int MoveId { get => moveId; set => moveId = value; }
+    public MoveType MoveType { get => moveType; set => moveType = value; }
     public Vector2 StartingPos { get => startingPos; set => startingPos = value; }
     public Vector2 DestinationPos { get => destinationPos; set => destinationPos = value; }
     public ChessPiece ChessPiece { get => chessPiece; set => chessPiece = value; }
     public ChessPiece CapturedChessPiece { get => capturedChessPiece; set => capturedChessPiece = value; }
     public int Turn { get => turn; set => turn = value; }
+    
 
-    public MoveLogger(ChessPiece chessPiece, ChessPiece capturedChessPiece, Vector2 startingPos, Vector2 destinationPos, int turn)
+    public MoveLogger(int moveId, MoveType moveType, ChessPiece chessPiece, ChessPiece capturedChessPiece, Vector2 startingPos, Vector2 destinationPos, int turn)
     {
+        this.MoveId = moveId;
+        this.MoveType = moveType;
         this.StartingPos = startingPos;
         this.DestinationPos = destinationPos;
         this.ChessPiece = chessPiece;

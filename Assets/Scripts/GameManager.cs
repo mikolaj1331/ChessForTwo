@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     BoardManager boardManager;
     public bool isWhiteTurn = true;
 
+    bool whiteTurnFinished = false;
+    bool blackTurnFinished = false;
+
     void Start()
     {
         gui = FindObjectOfType<GUIController>();
@@ -56,9 +59,20 @@ public class GameManager : MonoBehaviour
                 if (validMove)
                 {
                     HandleCheckmate();
-                    
+
+                    if (isWhiteTurn)
+                        whiteTurnFinished = true;
+                    else
+                        blackTurnFinished = true;
+
+                    if(whiteTurnFinished && blackTurnFinished)
+                    {
+                        boardManager.turn++;
+                        whiteTurnFinished = false;
+                        blackTurnFinished = false;
+                    }
+
                     isWhiteTurn = !isWhiteTurn;
-                    boardManager.turn++;
                 }
                 else
                 {

@@ -37,9 +37,10 @@ public class King : ChessPiece
     {
         if (hasMoved) return returnedValue;
 
-        int boundary = 0;
+        int boundary;
         if (direction == -1) boundary = 0;
         else if (direction == 1) boundary = 7;
+        else return returnedValue;
 
         bool[,] moves = new bool[8, 8];
         HandleOneDirectionLoopMovement(direction, 0, ref moves, false, false);
