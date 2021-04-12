@@ -48,7 +48,8 @@ public class Pawn : ChessPiece
                     returnedValue[c1.PositionX, c1.PositionY - 1] = true;
             }
         }
-        else if(c2 != null)
+
+        if(c2 != null)
         {
             if (c2.IsWhite != this.IsWhite)
             {

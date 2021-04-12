@@ -9,6 +9,7 @@ public abstract class ChessPiece : MonoBehaviour
     public int PositionY { set; get; }
     public bool IsWhite;
     public bool hasMoved = false;
+    
     public abstract bool[,] GetValidMoves(bool canCaptureAllies);
     public virtual bool[,] FindInvalidMoves(bool[,] returnedValue)
     {
@@ -96,7 +97,7 @@ public abstract class ChessPiece : MonoBehaviour
         }
         return false;
     }
-    protected void HandleOneDirectionLoopMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
+    protected void HandleDirectionalLoopMovement(int directionX, int directionY, ref bool[,] returnedValue, bool canCaptureAllies, bool canPassThroughObjects)
     {
         int i = PositionX;
         int j = PositionY;
@@ -129,9 +130,10 @@ public abstract class ChessPiece : MonoBehaviour
         if (attacker.CompareTag("Pawn") || attacker.CompareTag("Knight") || attacker.CompareTag("King")) return new bool[8, 8];
         Vector2Int direction = CalcualteDirection(attacker, defender);
         bool[,] shortestPath = new bool[8, 8];
-        attacker.HandleOneDirectionLoopMovement(direction.x, direction.y, ref shortestPath, false, canPassThroughObjects);
+        attacker.HandleDirectionalLoopMovement(direction.x, direction.y, ref shortestPath, false, canPassThroughObjects);
         return shortestPath;
     }
+    
     Vector2Int CalcualteDirection(ChessPiece attacker, ChessPiece defender)
     {
         int directionX = (defender.PositionX - attacker.PositionX);

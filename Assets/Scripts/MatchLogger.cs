@@ -124,8 +124,8 @@ public class MatchLogger : MonoBehaviour
         };
     }
 }
-//TODO: Change MatchLogger and Pawn Promotion logic to allow for promotion into other chess pieces than queen;
-//TODO: Every capture by pawn is considered en passant for a matchlogger
+//TODO: Change MatchLogger and Pawn Promotion logic to allow for promotion into other chess pieces than queen
+//TODO: Every capture by pawn is considered en passant for a matchlogger (fixed: error in logger constructor)
 public class MoveLogger
 {
     int moveId;

@@ -9,13 +9,13 @@ public class Bishop : ChessPiece
         bool[,] returnedValue = new bool[8, 8];
 
         //Top Left Movement
-        HandleOneDirectionLoopMovement(-1, 1, ref returnedValue, canCaptureAllies, false);
+        HandleDirectionalLoopMovement(-1, 1, ref returnedValue, canCaptureAllies, false);
         //Top Right Movement
-        HandleOneDirectionLoopMovement(1, 1, ref returnedValue, canCaptureAllies, false);
+        HandleDirectionalLoopMovement(1, 1, ref returnedValue, canCaptureAllies, false);
         //Bottom Left Movement
-        HandleOneDirectionLoopMovement(-1, -1, ref returnedValue, canCaptureAllies, false);
+        HandleDirectionalLoopMovement(-1, -1, ref returnedValue, canCaptureAllies, false);
         //Bottom Right Movement
-        HandleOneDirectionLoopMovement(1, -1, ref returnedValue, canCaptureAllies, false);
+        HandleDirectionalLoopMovement(1, -1, ref returnedValue, canCaptureAllies, false);
 
         return returnedValue;
     }

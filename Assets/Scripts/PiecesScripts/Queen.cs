@@ -12,7 +12,7 @@ public class Queen : ChessPiece
         {
             for (int j = -1; j < 2; j++)
             {
-                HandleOneDirectionLoopMovement(i, j, ref returnedValue, canCaptureAllies, false);
+                HandleDirectionalLoopMovement(i, j, ref returnedValue, canCaptureAllies, false);
             }
         }
         return returnedValue;

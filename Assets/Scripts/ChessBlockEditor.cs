@@ -12,7 +12,6 @@ public class ChessBlockEditor : MonoBehaviour
     [SerializeField] TextMeshPro textComponent;
 
     public bool isBorder;
-
     void Update()
     {
         UpdateName();

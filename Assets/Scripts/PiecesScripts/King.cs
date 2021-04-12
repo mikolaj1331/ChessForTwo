@@ -43,7 +43,7 @@ public class King : ChessPiece
         else return returnedValue;
 
         bool[,] moves = new bool[8, 8];
-        HandleOneDirectionLoopMovement(direction, 0, ref moves, false, false);
+        HandleDirectionalLoopMovement(direction, 0, ref moves, false, false);
         if (moves[boundary, this.PositionY] != false || moves[boundary - direction, this.PositionY] != true) return returnedValue;
 
         ChessPiece rook = BoardManager.Instance.Pieces[boundary - direction, this.PositionY];
