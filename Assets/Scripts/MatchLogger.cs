@@ -45,7 +45,7 @@ public class MatchLogger : MonoBehaviour
     public void PrintLogger(GameObject go)
     {
         TextMeshProUGUI text = go.GetComponent<TextMeshProUGUI>();
-        string result = "";
+        string result = "Turn\tW.Pieces\t\tB.Pieces\n\n";
         bool firstMove = true;
 
         for (int i = 0; i < matchLog.Count; i++)
@@ -54,9 +54,9 @@ public class MatchLogger : MonoBehaviour
             string move;
 
             if (!log.IsCaptureMove)
-                move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
+                move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + log.StartingPos.y + "-" + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
             else
-                move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + "x" + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
+                move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + log.StartingPos.y + "x" + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
 
             if (log.IsCheck)
                 move += "+";
@@ -64,14 +64,13 @@ public class MatchLogger : MonoBehaviour
                 move += "++";
 
             if (firstMove)
-                result += log.Turn + ". \t" + move + " " + HandleMoveTypes(log) + "      \t\t";
+                result += log.Turn + ".\t" + move + "" + HandleMoveTypes(log) + "     \t\t";
             else
-                result += move + " " + HandleMoveTypes(log) + "\n";
+                result += move + "" + HandleMoveTypes(log) + "\n";
 
-            firstMove = !firstMove;
-
-            text.text = result;
+            firstMove = !firstMove;            
         }
+        text.text = result;
     }
     public int GetMatchLogLength()
     {
@@ -101,7 +100,7 @@ public class MatchLogger : MonoBehaviour
     {
         return move.MoveType switch
         {
-            MoveType.EnPassant => " e.p.",
+            MoveType.EnPassant => "ep",
             MoveType.PawnPromotion => "=Q",
             MoveType.KingSideCastling => "O-O",
             MoveType.QueenSideCastling => "O-O-O",

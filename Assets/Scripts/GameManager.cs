@@ -89,11 +89,11 @@ public class GameManager : MonoBehaviour
     {
         string team, toDisplay;
         if (isWhiteTurn)
-            team = "White player";
+            team = "White pieces";
         else
-            team = "Black player";
+            team = "Black pieces";
 
-        toDisplay = "Game over!\n" + team + " has won!";
+        toDisplay = "Game over!\n" + team + " won!";
 
         gui.PauseGame();
         gui.OpenWindow(pauseMenuWindow);

@@ -17,7 +17,7 @@ public class Pawn : ChessPiece
 
         return returnedValue;
     }
-    public bool[,] HandleEnPasse(bool[,] returnedValue)
+    public bool[,] HandleEnPasse(bool[,] returnedValue, ChessPiece lastMovedPiece)
     {
         ChessPiece c1;
         ChessPiece c2;
@@ -40,7 +40,7 @@ public class Pawn : ChessPiece
 
         if (c1 != null)
         {
-            if(c1.IsWhite != this.IsWhite)
+            if(c1.IsWhite != this.IsWhite && c1 == lastMovedPiece)
             {
                 if (this.IsWhite)
                     returnedValue[c1.PositionX, c1.PositionY + 1] = true;
@@ -51,7 +51,7 @@ public class Pawn : ChessPiece
 
         if(c2 != null)
         {
-            if (c2.IsWhite != this.IsWhite)
+            if (c2.IsWhite != this.IsWhite && c2 == lastMovedPiece)
             {
                 if (this.IsWhite)
                     returnedValue[c2.PositionX, c2.PositionY + 1] = true;

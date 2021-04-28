@@ -131,7 +131,7 @@ public class BoardManager : MonoBehaviour
                 bool neighbour = (lastMove.ChessPiece.PositionX == piece.PositionX - 1 || lastMove.ChessPiece.PositionX == piece.PositionX + 1);
                 if (lastMove.ChessPiece.CompareTag("Pawn") && Mathf.Abs(lastMove.DestinationPos.y - lastMove.StartingPos.y) == 2 && neighbour)
                 {
-                    ValidMoves = piece.GetComponent<Pawn>().HandleEnPasse(ValidMoves);
+                    ValidMoves = piece.GetComponent<Pawn>().HandleEnPasse(ValidMoves, lastMove.ChessPiece);
                 }
             }
         }
@@ -199,11 +199,13 @@ public class BoardManager : MonoBehaviour
                 {
                     target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY - 1];
                     lastMove.ChessPiece.CapturedPiece(target);
+                    Pieces[target.PositionX, target.PositionY] = null;
                 }
                 else
                 {
                     target = Pieces[lastMove.ChessPiece.PositionX, lastMove.ChessPiece.PositionY + 1];
                     lastMove.ChessPiece.CapturedPiece(target);
+                    Pieces[target.PositionX, target.PositionY] = null;
                 }
 
                 logger.EditLog(lastMove, MoveType.EnPassant, target, lastMove.IsCheck, lastMove.IsCheckmate);
