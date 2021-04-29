@@ -80,20 +80,38 @@ public class GameManager : MonoBehaviour
     }
     void HandleCheckmate()
     {
-        if (!boardManager.CheckIfNotCheckmate(isWhiteTurn))
+        GameResult result = boardManager.CheckIfNotCheckmate(isWhiteTurn);
+        
+        switch(result)
         {
-            DisplayGameOverScreen();
+            case GameResult.NotCheckmate:
+                break;
+            case GameResult.Checkmate:
+                DisplayGameOverScreen(false);
+                break;
+            case GameResult.Draw:
+                DisplayGameOverScreen(true);
+                break;
         }
     }
-    private void DisplayGameOverScreen()
+    private void DisplayGameOverScreen(bool isDraw)
     {
-        string team, toDisplay;
-        if (isWhiteTurn)
-            team = "White pieces";
-        else
-            team = "Black pieces";
+        string toDisplay = "Game over!\n";
+        if (!isDraw)
+        {
+            string team; 
+            if (isWhiteTurn)
+                team = "White pieces";
+            else
+                team = "Black pieces";
 
-        toDisplay = "Game over!\n" + team + " won!";
+            toDisplay += team + " won!";
+        }
+        else
+        {
+            toDisplay += "It's a stalemate!";
+        }
+        
 
         gui.PauseGame();
         gui.OpenWindow(pauseMenuWindow);

@@ -82,6 +82,7 @@ public class Pawn : ChessPiece
         queen.PositionX = this.PositionX;
         queen.PositionY = this.PositionY;
 
+        BoardManager.Instance.activeChessPieces.Remove(this);
         BoardManager.Instance.Pieces[queen.PositionX, queen.PositionY] = queen;
         BoardManager.Instance.activeChessPieces.Add(queen);
         gameObject.SetActive(false);

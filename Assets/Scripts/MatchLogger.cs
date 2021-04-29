@@ -58,15 +58,19 @@ public class MatchLogger : MonoBehaviour
             else
                 move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + log.StartingPos.y + "x" + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
 
+            string check = "";
             if (log.IsCheck)
-                move += "+";
+                check += "+";
             else if (log.IsCheckmate)
-                move += "++";
+                check += "++";
+            else
+                check = "";
+
 
             if (firstMove)
-                result += log.Turn + ".\t" + move + "" + HandleMoveTypes(log) + "     \t\t";
+                result += log.Turn + ".\t" + move + "" + HandleMoveTypes(log) + check + "    \t\t";
             else
-                result += move + "" + HandleMoveTypes(log) + "\n";
+                result += move + "" + HandleMoveTypes(log) + check + "\n";
 
             firstMove = !firstMove;            
         }

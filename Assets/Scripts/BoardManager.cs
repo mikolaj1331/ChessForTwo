@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GameResult { NotCheckmate, Checkmate, Draw};
+
 [System.Serializable]
 public class BoardManager : MonoBehaviour
 {
@@ -31,39 +33,33 @@ public class BoardManager : MonoBehaviour
         ProcessVisuals(isWhiteTurn, piece);
         selectedChessPiece = piece;
     }
-    public bool CheckIfNotCheckmate(bool isWhiteTurn)
+    public GameResult CheckIfNotCheckmate(bool isWhiteTurn)
     {
-        bool returnedValue = true;
+        bool returnedValue;
         var kings = FindObjectsOfType<King>();
 
         foreach (var k in kings)
         {
             if (k.IsWhite == isWhiteTurn) continue;
-
             returnedValue = CheckIfAnyPossibleMovesValid(k);
-            if (returnedValue) return returnedValue;
+            if (returnedValue) return GameResult.NotCheckmate;
 
-            if (k.IsChecked)
+            foreach (var ch in activeChessPieces)
             {
-                foreach (var ch in activeChessPieces)
-                {
-                    if (ch.IsWhite == isWhiteTurn || ch.CompareTag("King")) continue;
-                    returnedValue = CheckIfAnyPossibleMovesValid(ch);
-                    if (returnedValue) return returnedValue;
-                }
+                if (ch.IsWhite == isWhiteTurn || ch.CompareTag("King")) continue;
+                returnedValue = CheckIfAnyPossibleMovesValid(ch);
+                if (returnedValue) return GameResult.NotCheckmate;
             }
-            else
-            {
-                returnedValue = true;
+
+            if (returnedValue == false)
+            {                
+                MoveLogger lastMove = logger.GetLastMove();
+                logger.EditLog(lastMove, lastMove.MoveType, false, true);
+                if (k.IsChecked) return GameResult.Checkmate;
+                else return GameResult.Draw;
             }
         }
-        if (returnedValue == false)
-        {
-            MoveLogger lastMove = logger.GetLastMove();
-            logger.EditLog(lastMove, lastMove.MoveType, false, true);
-        }
-
-        return returnedValue;
+        return GameResult.NotCheckmate;        
     }
     public bool MoveChessPiece(int x, int y, bool isWhiteTurn)
     {
@@ -337,3 +333,5 @@ public class BoardManager : MonoBehaviour
         }
     }    
 }
+
+// TODO: Fix a bug with checkmate not being trigger after king used queenside castling and checkmate triggered by promotion
