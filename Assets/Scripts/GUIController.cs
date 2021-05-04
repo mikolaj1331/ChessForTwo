@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
-    public bool gameIsPaused = false;
+    public bool isPaused = false;
 
     public void PauseGame()
     {
         Time.timeScale = 0;
-        gameIsPaused = true;
+        isPaused = true;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
-        gameIsPaused = false;
+        isPaused = false;
     } 
 
     public void OpenWindow(GameObject go)

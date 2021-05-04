@@ -128,7 +128,6 @@ public class MatchLogger : MonoBehaviour
     }
 }
 //TODO: Change MatchLogger and Pawn Promotion logic to allow for promotion into other chess pieces than queen
-//TODO: Every capture by pawn is considered en passant for a matchlogger (fixed: error in logger constructor)
 public class MoveLogger
 {
     int moveId;
@@ -153,7 +152,8 @@ public class MoveLogger
     public bool IsCheck { get => isCheck; set => isCheck = value; }
     public bool IsCheckmate { get => isCheckmate; set => isCheckmate = value; }
 
-    public MoveLogger(int moveId, MoveType moveType, ChessPiece chessPiece, ChessPiece capturedChessPiece, Vector2 startingPos, Vector2 destinationPos, int turn, bool isCaptureMove, bool isCheck, bool isCheckmate)
+    public MoveLogger(int moveId, MoveType moveType, ChessPiece chessPiece, ChessPiece capturedChessPiece, 
+        Vector2 startingPos, Vector2 destinationPos, int turn, bool isCaptureMove, bool isCheck, bool isCheckmate)
     {
         this.MoveId = moveId;
         this.MoveType = moveType;

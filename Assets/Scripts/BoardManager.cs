@@ -127,7 +127,7 @@ public class BoardManager : MonoBehaviour
                 bool neighbour = (lastMove.ChessPiece.PositionX == piece.PositionX - 1 || lastMove.ChessPiece.PositionX == piece.PositionX + 1);
                 if (lastMove.ChessPiece.CompareTag("Pawn") && Mathf.Abs(lastMove.DestinationPos.y - lastMove.StartingPos.y) == 2 && neighbour)
                 {
-                    ValidMoves = piece.GetComponent<Pawn>().HandleEnPasse(ValidMoves, lastMove.ChessPiece);
+                    ValidMoves = piece.GetComponent<Pawn>().HandleEnPassant(ValidMoves, lastMove.ChessPiece);
                 }
             }
         }
@@ -333,5 +333,3 @@ public class BoardManager : MonoBehaviour
         }
     }    
 }
-
-// TODO: Fix a bug with checkmate not being trigger after king used queenside castling and checkmate triggered by promotion

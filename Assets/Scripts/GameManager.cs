@@ -23,14 +23,10 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        if (gui.gameIsPaused) return;
+        if (gui.isPaused) return;
         RespondToPlayerInput();
     }
     void RespondToPlayerInput()
-    {
-        CheckIfValidClick();
-    }
-    void CheckIfValidClick()
     {
         RaycastHit[] rayHits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 50f, LayerMask.GetMask("ChessBoardBlock"));
         foreach (RaycastHit rayHit in rayHits)
@@ -40,6 +36,7 @@ public class GameManager : MonoBehaviour
             HandlePlayerInput(boardBlock);
         }
     }
+
     void HandlePlayerInput(ChessBlockEditor boardBlock)
     {
         if (Input.GetMouseButtonDown(0))
@@ -94,7 +91,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    private void DisplayGameOverScreen(bool isDraw)
+    void DisplayGameOverScreen(bool isDraw)
     {
         string toDisplay = "Game over!\n";
         if (!isDraw)

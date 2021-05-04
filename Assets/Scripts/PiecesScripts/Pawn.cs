@@ -17,7 +17,7 @@ public class Pawn : ChessPiece
 
         return returnedValue;
     }
-    public bool[,] HandleEnPasse(bool[,] returnedValue, ChessPiece lastMovedPiece)
+    public bool[,] HandleEnPassant(bool[,] returnedValue, ChessPiece lastMovedPiece)
     {
         ChessPiece c1;
         ChessPiece c2;
@@ -110,7 +110,7 @@ public class Pawn : ChessPiece
     {
         if (IsWhite)
         {
-            if (PositionY != 7)
+            if (PositionX != 0 && PositionY != 7)
             {
                 HandlePawnAttackMovement(-1, 1, ref returnedValue, canCaptureAllies);
             }
