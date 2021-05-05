@@ -376,6 +376,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6859639092154332115, guid: b6bfc8b905f67fc408b60e39969be45c, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859639092154332115, guid: b6bfc8b905f67fc408b60e39969be45c, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859639092154332115, guid: b6bfc8b905f67fc408b60e39969be45c, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
+      objectReference: {fileID: 0}
     - target: {fileID: 6859639092154332125, guid: b6bfc8b905f67fc408b60e39969be45c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
