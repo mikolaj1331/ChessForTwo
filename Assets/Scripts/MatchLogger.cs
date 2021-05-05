@@ -58,6 +58,9 @@ public class MatchLogger : MonoBehaviour
             else
                 move = SwitchPieceNameToSymbol(log.ChessPiece) + SwitchPositionToLetter(log.StartingPos.x) + log.StartingPos.y + "x" + SwitchPositionToLetter(log.DestinationPos.x) + log.DestinationPos.y;
 
+            if (log.MoveType == MoveType.KingSideCastling || log.MoveType == MoveType.QueenSideCastling)
+                move = "";
+
             string check = "";
             if (log.IsCheck)
                 check += "+";
@@ -68,7 +71,7 @@ public class MatchLogger : MonoBehaviour
 
 
             if (firstMove)
-                result += log.Turn + ".\t" + move + "" + HandleMoveTypes(log) + check + "    \t\t";
+                result += log.Turn + ".\t" + move + "" + HandleMoveTypes(log) + check + " \t\t";
             else
                 result += move + "" + HandleMoveTypes(log) + check + "\n";
 
