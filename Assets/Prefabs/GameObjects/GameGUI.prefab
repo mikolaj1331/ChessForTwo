@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -5}
   m_SizeDelta: {x: -70, y: -70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &109940704
@@ -457,10 +457,10 @@ RectTransform:
   m_Father: {fileID: 737958643}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 104.65, y: -163.33}
-  m_SizeDelta: {x: 210.62, y: 1641.61}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 250, y: 0}
+  m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &567686687
 CanvasRenderer:
@@ -490,60 +490,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-    cursus nunc quis arcu ornare aliquam. Nunc elementum nulla fermentum mi luctus,
-    vel malesuada nibh auctor. Nam pulvinar purus nunc. Mauris mollis eu ex quis
-    rhoncus. In tristique sapien lacus, vitae tempor eros vulputate rutrum. Mauris
-    sed turpis nulla. Proin egestas maximus massa sed hendrerit. Ut fermentum, lacus
-    et iaculis vestibulum, ex massa sodales felis, vitae efficitur nunc arcu a nulla.
-    Mauris pretium eros ut tincidunt rhoncus. Aliquam tristique, nibh eget faucibus
-    varius, leo libero ultricies nibh, eu rhoncus ex dolor at nibh. Etiam quis accumsan
-    quam. Suspendisse congue magna sem, ut volutpat lorem rhoncus ut. Sed lorem risus,
-    imperdiet non scelerisque id, vehicula sed eros.
-
-
-
-    Aliquam aliquam ante
-    at nulla fringilla porttitor. In vitae consectetur ante. Nulla aliquam, odio
-    id porta auctor, ligula mauris interdum nulla, quis pulvinar est dolor eget nibh.
-    Ut pharetra vel nunc id sagittis. Etiam nec ex tristique lorem cursus dignissim.
-    Morbi iaculis et nisl nec faucibus. Pellentesque habitant morbi tristique senectus
-    et netus et malesuada fames ac turpis egestas. Etiam massa ipsum, interdum eget
-    tellus et, ultricies gravida ex.
-
-
-
-    Suspendisse id ante feugiat, pellentesque
-    lorem eu, maximus risus. Aenean elementum sapien ex. Nulla vel nulla vel lacus
-    finibus vehicula. Sed eget dapibus ex, vitae pharetra nunc. Duis at ultrices
-    metus. Maecenas vel volutpat lacus. Pellentesque lacus massa, egestas vitae lacinia
-    sed, dapibus non magna. Vivamus quis laoreet velit, at iaculis urna. Sed venenatis
-    sit amet sem at iaculis. Proin ipsum neque, placerat sit amet accumsan ac, pharetra
-    a nunc. Morbi dictum metus a lorem euismod elementum.
-
-
-
-    Integer vehicula
-    aliquam interdum. Fusce iaculis ipsum nibh, in luctus ligula pretium ac. Phasellus
-    viverra, leo eu semper feugiat, magna lacus iaculis risus, a viverra dui magna
-    non erat. Quisque vel est ligula. Ut fringilla placerat risus, eget facilisis
-    libero dapibus ut. Aliquam erat volutpat. Sed venenatis ligula id elit lacinia
-    facilisis.
-
-
-
-    Aenean facilisis fringilla tortor, eu cursus odio gravida eget.
-    Vivamus dictum nisl ipsum, a dictum metus lacinia vitae. Vivamus non arcu urna.
-    Nunc lobortis, lectus at consequat aliquam, tortor nisl dictum libero, id sollicitudin
-    libero sapien in ex. Praesent tincidunt magna a leo auctor, nec tempor felis
-    scelerisque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-    posuere cubilia curae; Vestibulum consequat erat eu metus hendrerit, ut tristique
-    neque volutpat. Nunc enim eros, dapibus nec interdum congue, iaculis at augue.
-    Phasellus vel sapien sagittis, condimentum orci eget, semper tellus. Vivamus
-    id sagittis nunc. Quisque ligula ante, gravida nec convallis in, convallis et
-    sem. Fusce a justo non ex aliquam finibus eu id nunc. Etiam quis luctus tellus,
-    lacinia rhoncus enim. Nulla vulputate, dui et vestibulum ultrices, est libero
-    convallis lectus, quis posuere risus tellus non ipsum.'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -570,13 +517,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -794,8 +741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.04954147, y: 1.6673737}
-  m_SizeDelta: {x: 230.1, y: 326.66}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &737958644
 MonoBehaviour:
@@ -995,10 +942,10 @@ RectTransform:
   m_Father: {fileID: 5453949733704864378}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1336578493
 CanvasRenderer:
@@ -1220,8 +1167,8 @@ RectTransform:
   m_Father: {fileID: 435664715}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.40050617}
-  m_AnchorMax: {x: 1, y: 0.59949374}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1297,10 +1244,10 @@ RectTransform:
   m_Father: {fileID: 737958643}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 104.98145, y: -0.0000076293945}
-  m_SizeDelta: {x: 20.147, y: 326.66}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -50, y: 0}
+  m_SizeDelta: {x: 25, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1744691959
 CanvasRenderer:
@@ -2871,10 +2818,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2911,7 +2858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e2551982e839042a58d250b94376ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameIsPaused: 0
+  isPaused: 0
 --- !u!114 &625404212
 MonoBehaviour:
   m_ObjectHideFlags: 0

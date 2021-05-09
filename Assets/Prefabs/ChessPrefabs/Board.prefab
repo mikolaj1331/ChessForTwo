@@ -41930,6 +41930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696379cf3458acc4cb1673c067a3771e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeChessPieces: []
   selectedChessPiece: {fileID: 0}
   turn: 0
 --- !u!114 &6497717894734393410
