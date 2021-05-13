@@ -130,7 +130,6 @@ public class MatchLogger : MonoBehaviour
         };
     }
 }
-//TODO: Change MatchLogger and Pawn Promotion logic to allow for promotion into other chess pieces than queen
 public class MoveLogger
 {
     int moveId;

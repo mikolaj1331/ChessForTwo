@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
     }
     void RespondToPlayerInput()
     {
-        RaycastHit[] rayHits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 50f, LayerMask.GetMask("ChessBoardBlock"));
+        Ray point = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int layerMask = LayerMask.GetMask("ChessBoardBlock");
+        RaycastHit[] rayHits = Physics.RaycastAll(point, 50f, layerMask);
         foreach (RaycastHit rayHit in rayHits)
         {
             ChessBlockEditor boardBlock = rayHit.transform.GetComponent<ChessBlockEditor>();
@@ -41,7 +43,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //Debug.Log("You clicked " + boardBlock.name);
             if (boardManager.selectedChessPiece == null)
             {
                 boardManager.SelectChessPiece((int)boardBlock.transform.position.x, (int)boardBlock.transform.position.z, isWhiteTurn);
@@ -115,5 +116,3 @@ public class GameManager : MonoBehaviour
         gui.ChangeText(textBox, toDisplay);
     }
 }
-
-//TODO: Weird behaviour while selecting a chess piece probably cause by raycasting or camera position (SOLUTION: Raycast was hitting a collider that was set around entire block, changed so that collider is only on top side of the cube)
