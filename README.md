@@ -4,6 +4,7 @@ Developed for Android.
 
 
 #Screenshots
+
 Game screen
 ![image](https://user-images.githubusercontent.com/53970671/144509607-c8ea672c-8924-49d6-b3c0-3514ad696bbc.png)
 
